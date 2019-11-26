@@ -1,6 +1,8 @@
 package com.dongfang.dsa.structure.ch0_intro;
 
 import com.dongfang.dsa.tools.StopWatch;
+import org.junit.jupiter.api.Test;
+
 
 public class FibnacciSeq {
     /**
@@ -10,6 +12,10 @@ public class FibnacciSeq {
      * 0 1 2 3 4 5 6 7...
      * 0 1 1 2 3 5 8 13 ...
      */
+
+    // 函数执行多少次，加法就执行几次
+    // 递归算法的时间复杂度，主要看这个方法被递归了多少次，然后计算单次调用的时间复杂度
+    // 下面的算法的递归 调用就是一个二叉树
 
     private static long fib1(long n) {
         if (n <= 1) return n;
@@ -21,6 +27,11 @@ public class FibnacciSeq {
         long second = 1;
         long sum;
 
+        // 赋值 1次
+        // 判断 n次
+        // 自增 n次
+        // 循环内执行 n 次
+        // O(n)
         for (long i = 0; i < n - 1; i++) {
             sum = first + second;
             first = second;
@@ -28,6 +39,15 @@ public class FibnacciSeq {
         }
         return second;
     }
+
+    /**
+     * 以上两个算法的差别
+     * O(N) O(2^N)
+     * 1GH的计算机，每次运算10^9
+     * O(N)算法耗时6.4 * 10^-8s
+     * O(2^N) 算法耗时584。94年
+     * @param args
+     */
 
     public static void main(String[] args) {
         test002(50);
@@ -64,5 +84,10 @@ public class FibnacciSeq {
                 fib2(10000);
             }
         });
+    }
+
+    @Test
+    public void test002() {
+        System.out.println("\"hello \" = " + "hello ");
     }
 }
