@@ -2,6 +2,8 @@ package com.dongfang.dsa.structure.ch1_list;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Predicate;
+
 public class ArrayListTest {
     @Test
     public void testIndexOutOfBound() {
@@ -35,6 +37,57 @@ public class ArrayListTest {
         System.out.println("str = " + str);
         System.out.println("--------------");
         System.out.println("replace = " + replace);
+
+    }
+
+
+
+    class Person {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("{");
+            sb.append("\"name\":\"")
+                    .append(name).append('\"');
+            sb.append(",\"age\":")
+                    .append(age);
+            sb.append('}');
+            return sb.toString();
+        }
+
+        // 自定义对象的比较方法
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+
+        // 销毁时调用
+        @Override
+        protected void finalize() throws Throwable {
+            super.finalize();
+
+            System.out.println("Person -finialize");
+        }
+    }
+
+    @Test
+    public void testFinalize() {
+        ArrayList<Person> persons = new ArrayList<>();
+        persons.add(new Person("tom", 23));
+        persons.add(new Person("jack", 22));
+        assert persons.size() == 3;
+        persons.clear();
+
+        // 提醒jvm进行垃圾回收
+        System.gc();
+
 
     }
 }

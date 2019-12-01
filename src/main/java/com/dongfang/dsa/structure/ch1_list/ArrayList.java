@@ -48,6 +48,10 @@ public class ArrayList<E> {
      */
     public void clear() {
         // 清空的原则由自己把握，可以对elements进行缩小
+        // 如果不设为null，对象还是存在于内存中
+        for (int i = 0; i < size; i++) {
+            elements[i] = null;
+        }
         size = 0;
     }
 
@@ -135,8 +139,12 @@ public class ArrayList<E> {
         ensureCapacity(index + 1);
 
         // [size - 1, index] -> [size, index + 1] 移动区间
-        for (int i = size - 1; i >= index; i--) {
-            elements[i + 1] = elements[i];
+//        for (int i = size - 1; i >= index; i--) {
+//            elements[i + 1] = elements[i];
+//        }
+        // 只要能减少运算的地方，就优化，从后往前挪
+        for (int i = size; i > index; i++) {
+            elements[i] = elements[i - 1];
         }
         elements[index] = element;
         size++;
@@ -153,11 +161,17 @@ public class ArrayList<E> {
         // [index + 1, size - 1] -> [index, size -2]
         // 把这个区间的元素 移动到前面的区间
         E old = elements[index];
-        for (int i = index + 1; i <= size - 1; i++) {
+        for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
+//        size--;
+//        elements[size] = null;
+        elements[--size] = null;
         return old;
+    }
+
+    public void remove(E element) {
+        remove(indexOf(element));
     }
 
     /**
@@ -167,8 +181,16 @@ public class ArrayList<E> {
      * @return
      */
     public int indexOf(E element) {
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == element) return i;
+        // 如果是null，找到第一个null，返回位置就好
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            // 不为null，element调用方法肯定不会空指针异常
+            for (int i = 0; i < size; i++) {
+                if (element.equals(elements[i])) return i;
+            }
         }
         // 找不到就返回-1
         return ELEMENT_NOT_FOUNT;
