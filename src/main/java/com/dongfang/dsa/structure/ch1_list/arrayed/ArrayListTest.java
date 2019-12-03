@@ -1,8 +1,6 @@
-package com.dongfang.dsa.structure.ch1_list;
+package com.dongfang.dsa.structure.ch1_list.arrayed;
 
-import org.junit.jupiter.api.Test;
-
-import java.util.function.Predicate;
+import org.junit.Test;
 
 public class ArrayListTest {
     @Test
@@ -82,7 +80,7 @@ public class ArrayListTest {
         ArrayList<Person> persons = new ArrayList<>();
         persons.add(new Person("tom", 23));
         persons.add(new Person("jack", 22));
-        assert persons.size() == 3;
+        assert persons.size() == 2;
         persons.clear();
 
         // 提醒jvm进行垃圾回收

@@ -1,6 +1,6 @@
 package com.dongfang.dsa.structure.ch0_intro;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * 如何评价一个算法的好坏

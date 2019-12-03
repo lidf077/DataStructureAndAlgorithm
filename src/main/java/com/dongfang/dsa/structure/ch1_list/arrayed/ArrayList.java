@@ -1,82 +1,97 @@
-package com.dongfang.dsa.structure.ch1_list;
+package com.dongfang.dsa.structure.ch1_list.arrayed;
 
-public class IntArrayList {
+import com.dongfang.dsa.structure.ch1_list.AbstractList;
+import com.dongfang.dsa.structure.ch1_list.List;
+
+@SuppressWarnings("unchecked")
+public class ArrayList<E> extends AbstractList<E> {
     // 元素的数量，已经存在的元素的index为【0, size-1]
-    private int size;
+//    private int size;
 
     // 存放所有的元素
-    private int[] elements;
+    private E[] elements;
+
+    // 对象数组，其中存放的是对象的地址值，也就是引用值，数组中存放的是对象的地址值
+    // Object对象可以指向任何对象的引用，因此new Object[] 数组中可以存放任何对象的引用
+    // 存放地址可以节省空间
 
     // 不指定初始长度时的默认长度
     private static final int DEFAULT_CAPACITY = 10;
 
     // ArrayList中找不到元素
-    private static final int ELEMENT_NOT_FOUNT = -1;
+//    private static final int ELEMENT_NOT_FOUNT = -1;
 
-    public IntArrayList(int capacity) {
+    public ArrayList(int capacity) {
         // capacity 可能为负数，因此要对这个异常边界进行处理
         //capacity = capacity < DEFAULT_CAPACITY ? DEFAULT_CAPACITY : capacity;
         capacity = Math.max(capacity, DEFAULT_CAPACITY);
-        elements = new int[capacity];
+
+        // 所有类都继承java.lang.Object
+        //elements = new E[capacity];
+        elements = (E[]) new Object[capacity];
     }
 
-    public IntArrayList() {
+    public ArrayList() {
         // 构造函数相互调用，使用this(arg)
         this(DEFAULT_CAPACITY);
     }
-
-
-    /**
+/*
+    *//**
      * 元素的数量
      *
      * @return
-     */
+     *//*
     public int size() {
         return size;
-    }
+    }*/
+
 
     /**
      * 清除所有的元素
      */
     public void clear() {
         // 清空的原则由自己把握，可以对elements进行缩小
+        // 如果不设为null，对象还是存在于内存中
+        for (int i = 0; i < size; i++) {
+            elements[i] = null;
+        }
         size = 0;
     }
 
-    /**
+  /*  *//**
      * 是否为空
      *
      * @return
-     */
+     *//*
     public boolean isEmpty() {
         return size == 0;
     }
 
-    /**
+    *//**
      * 是否包含某个元素
      *
      * @param element
      * @return
-     */
-    public boolean contains(int element) {
+     *//*
+    public boolean contains(E element) {
         // 如果元素的索引存在，则包含
         return indexOf(element) != ELEMENT_NOT_FOUNT;
     }
 
-    /**
+    *//**
      * 添加元素到尾部
      *
      * @param element
-     */
-    public void add(int element) {
-/*        elements[size] = element;
-        size++;*/
+     *//*
+    public void add(E element) {
+*//*        elements[size] = element;
+        size++;*//*
 
         // 先使用size，再++
         // elements[size++] = element;
         // 直接将元素添加到最后面
         add(size, element);
-    }
+    }*/
 
     /**
      * 获取index位置的元素
@@ -84,7 +99,7 @@ public class IntArrayList {
      * @param index
      * @return
      */
-    public int get(int index) {
+    public E get(int index) {
 /*        if (index < 0 || index >= size) {
             // 客户端有错误，就抛出异常，让客户端知道
             // 如果直接返回一个0，不好，有错误的地方，就抛出异常，利于定位问题
@@ -103,10 +118,10 @@ public class IntArrayList {
      * @param element
      * @return
      */
-    public int set(int index, int element) {
+    public E set(int index, E element) {
         rangeCheck(index);
 
-        int old = elements[index];
+        E old = elements[index];
         elements[index] = element;
         return old;
     }
@@ -117,7 +132,7 @@ public class IntArrayList {
      * @param index
      * @param element
      */
-    public void add(int index, int element) {
+    public void add(int index, E element) {
         // index = size时，在末尾插入，因此改成index > size
 /*        if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
@@ -127,8 +142,13 @@ public class IntArrayList {
         ensureCapacity(index + 1);
 
         // [size - 1, index] -> [size, index + 1] 移动区间
-        for (int i = size - 1; i >= index; i--) {
-            elements[i + 1] = elements[i];
+//        for (int i = size - 1; i >= index; i--) {
+//            elements[i + 1] = elements[i];
+//        }
+        // 只要能减少运算的地方，就优化，从后往前挪
+        for (int i = size; i > index; i++) {
+            // java.lang.ArrayIndexOutOfBoundsException
+            elements[i] = elements[i - 1];
         }
         elements[index] = element;
         size++;
@@ -140,16 +160,22 @@ public class IntArrayList {
      * @param index
      * @return
      */
-    public int remove(int index) {
+    public E remove(int index) {
         rangeCheck(index);
         // [index + 1, size - 1] -> [index, size -2]
         // 把这个区间的元素 移动到前面的区间
-        int old = elements[index];
-        for (int i = index + 1; i <= size - 1; i++) {
+        E old = elements[index];
+        for (int i = index + 1; i < size; i++) {
             elements[i - 1] = elements[i];
         }
-        size--;
+//        size--;
+//        elements[size] = null;
+        elements[--size] = null;
         return old;
+    }
+
+    public void remove(E element) {
+        remove(indexOf(element));
     }
 
     /**
@@ -158,9 +184,17 @@ public class IntArrayList {
      * @param element
      * @return
      */
-    public int indexOf(int element) {
-        for (int i = 0; i < size; i++) {
-            if (elements[i] == element) return i;
+    public int indexOf(E element) {
+        // 如果是null，找到第一个null，返回位置就好
+        if (element == null) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i] == null) return i;
+            }
+        } else {
+            // 不为null，element调用方法肯定不会空指针异常
+            for (int i = 0; i < size; i++) {
+                if (element.equals(elements[i])) return i;
+            }
         }
         // 找不到就返回-1
         return ELEMENT_NOT_FOUNT;
@@ -178,6 +212,7 @@ public class IntArrayList {
         return res.toString();
     }
 
+/*
     // [0, size-1]区间的检查
     private void rangeCheck(int index) {
         if (index < 0 || index >= size) {
@@ -196,9 +231,11 @@ public class IntArrayList {
     private void outOfBounds(int index) {
         throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
     }
+*/
 
     /**
      * 保证要有capacity的容量
+     *
      * @param capacity
      */
     private void ensureCapacity(int capacity) {
@@ -207,7 +244,7 @@ public class IntArrayList {
 
         // 新容量为旧容量的1.5倍
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        int[] newElements = new int[newCapacity];
+        E[] newElements = (E[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
             newElements[i] = elements[i];
         }
