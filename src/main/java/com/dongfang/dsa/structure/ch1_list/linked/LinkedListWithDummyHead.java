@@ -2,8 +2,19 @@ package com.dongfang.dsa.structure.ch1_list.linked;
 
 import com.dongfang.dsa.structure.ch1_list.AbstractList;
 
-public class LinkedList<E> extends AbstractList<E> {
+import java.util.IdentityHashMap;
+
+/**
+ * 虚拟头节点，有时候为了让代码更加简洁，统一所有结点的处理逻辑，可以在最前面增加虚拟头节点，不存储数据
+ *
+ * @param <E>
+ */
+public class LinkedListWithDummyHead<E> extends AbstractList<E> {
     private Node<E> first;
+
+    public LinkedListWithDummyHead() {
+        first = new Node<>(null, null);
+    }
 
     private static class Node<E> {
         // 只用在里面，不用private
@@ -40,29 +51,22 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-        if (index == 0) {
-            first = new Node<>(element, first);
-        } else {
-            Node<E> prev = node(index - 1);
-            prev.next = new Node<>(element, prev.next);
-        }
+
+        Node<E> prev = (index == 0) ? first : node(index - 1);
+        prev.next = new Node<>(element, prev.next);
+
         size++;
     }
 
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        E old;
-        if (index == 0) {
-            old = first.element;
-            first = first.next;
-        } else {
-            Node<E> prev = node(index - 1);
-            old = prev.next.element;
-            prev.next = prev.next.next;
-        }
-        size--;
 
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        E old = prev.next.element;
+        prev.next = prev.next.next;
+
+        size--;
         return old;
     }
 
@@ -73,7 +77,7 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public int indexOf(E element) {
-        Node<E> node = first;
+        Node<E> node = first.next;
         if (element == null) {
             for (int i = 0; i < size; i++) {
                 if (node.element == null) return i;
@@ -92,7 +96,7 @@ public class LinkedList<E> extends AbstractList<E> {
     public String toString() {
         StringBuilder res = new StringBuilder();
         res.append("size=").append(size).append(", [");
-        Node<E> node = first;
+        Node<E> node = first.next;
         for (int i = 0; i < size; i++) {
             res.append(node.element);
             if (i != (size - 1)) res.append(", ");
@@ -117,7 +121,7 @@ public class LinkedList<E> extends AbstractList<E> {
      */
     private Node<E> node(int index) {
         rangeCheck(index);
-        Node<E> node = first;
+        Node<E> node = first.next;
         // 循环走index次
         for (int i = 0; i < index; i++) {
             node = node.next;

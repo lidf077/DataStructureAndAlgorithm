@@ -22,4 +22,16 @@ public class LinkedListTest {
         System.out.println("list = " + list);
         System.out.println(list.get(1));
     }
+
+    @Test
+    public void test002() {
+        List<Integer> list = new LinkedListWithDummyHead<>();
+//        list.remove(0);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(99);
+        list.remove(1);
+        System.out.println("list = " + list);
+    }
 }
