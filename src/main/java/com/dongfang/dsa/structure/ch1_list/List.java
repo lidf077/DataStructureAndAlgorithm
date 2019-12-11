@@ -1,5 +1,18 @@
 package com.dongfang.dsa.structure.ch1_list;
 
+
+/**
+ * 复杂度分析，只分析增 删 改 查 的复杂度
+ *      最好情况复杂度
+ *      最坏情况复杂度
+ *      平均情况复杂度
+ *           操作                         ArrayList       LinkedList
+ *           增add(E element)
+ *           删remove(index)
+ *           改set(index,element)
+ *          查 get(index)                 O(1)             O(N)
+ */
+
 /**
  * 只定义提供给外界的方法
  * @param <E>
