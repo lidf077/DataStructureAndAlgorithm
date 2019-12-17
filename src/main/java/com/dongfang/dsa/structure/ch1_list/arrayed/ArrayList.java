@@ -35,8 +35,8 @@ public class ArrayList<E> extends AbstractList<E> {
         // 构造函数相互调用，使用this(arg)
         this(DEFAULT_CAPACITY);
     }
-/*
-    *//**
+    /*
+     *//**
      * 元素的数量
      *
      * @return
@@ -58,7 +58,7 @@ public class ArrayList<E> extends AbstractList<E> {
         size = 0;
     }
 
-  /*  *//**
+    /*  *//**
      * 是否为空
      *
      * @return
@@ -128,6 +128,9 @@ public class ArrayList<E> extends AbstractList<E> {
 
     /**
      * 在index位置插入一个元素
+     * 最好 O(1)
+     * 最坏O(N)
+     * 平均O(N/2)
      *
      * @param index
      * @param element
@@ -171,8 +174,30 @@ public class ArrayList<E> extends AbstractList<E> {
 //        size--;
 //        elements[size] = null;
         elements[--size] = null;
+        trim();
         return old;
     }
+
+    /**
+     * 动态数组缩容
+     * 如果内存使用比较紧张，动态数组有比较多的剩余空间，可以考虑进行缩容操作
+     * 比如剩余空间占总容量的一半时，就进行缩容
+     *
+     * 如果扩容倍数，缩容时机不得当，有可能会导致复杂度震荡
+     * 扩容倍数与缩容倍数不要相等
+     */
+    private void trim() {
+        int oldCapacity = elements.length;
+        int newCapacity = oldCapacity >> 1;
+        if (size >= newCapacity || oldCapacity <= DEFAULT_CAPACITY) return;
+
+        E[] newElements = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+        elements = newElements;
+    }
+
 
     public void remove(E element) {
         remove(indexOf(element));

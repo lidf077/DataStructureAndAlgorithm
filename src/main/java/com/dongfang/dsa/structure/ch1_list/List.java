@@ -7,10 +7,14 @@ package com.dongfang.dsa.structure.ch1_list;
  *      最坏情况复杂度
  *      平均情况复杂度
  *           操作                         ArrayList       LinkedList
- *           增add(E element)
+ *           增add(index, element)
  *           删remove(index)
- *           改set(index,element)
- *          查 get(index)                 O(1)             O(N)
+ *           改set(index,element)          O(1)
+ *           查 get(index)                 O(1)             O(N)
+ *
+ *           链表的各种操作都是O(N)，因为要找节点，其实还是N，只是拼接时常数操作
+ *
+ *           均摊复杂度：经过连续的多次复杂度低的情况后，出现复杂度高的情况
  */
 
 /**
