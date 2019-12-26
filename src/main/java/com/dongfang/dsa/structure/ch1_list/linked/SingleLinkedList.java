@@ -2,19 +2,16 @@ package com.dongfang.dsa.structure.ch1_list.linked;
 
 import com.dongfang.dsa.structure.ch1_list.AbstractList;
 
-public class LinkedList<E> extends AbstractList<E> {
+public class SingleLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
-    private Node<E> last;
 
     private static class Node<E> {
         // 只用在里面，不用private
         E element;
-        Node<E> prev;
         Node<E> next;
 
         // 创建一个节点，存放此节点的值与指向的下一个节点
-        public Node(Node<E> prev, E element, Node<E> next) {
-            this.prev = prev;
+        public Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
@@ -23,9 +20,7 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void clear() {
         first = null;
-        last = null;
         size = 0;
-        // 被局部变量所指向的对象，是gc root对象
     }
 
     @Override
@@ -114,20 +109,20 @@ public class LinkedList<E> extends AbstractList<E> {
         return res.toString();
     }
 
+
+    /**
+     * 获取index位置对应的节点对象
+     *
+     * @param index
+     * @return
+     */
     private Node<E> node(int index) {
         rangeCheck(index);
-        if (index < (size >> 1)) {
-            Node<E> node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-            return node;
-        } else {
-            Node<E> node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-            return node;
+        Node<E> node = first;
+        // 循环走index次
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
+        return node;
     }
 }
