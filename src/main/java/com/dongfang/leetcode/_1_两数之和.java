@@ -34,9 +34,8 @@ public class _1_两数之和 {
             int complement = target - nums[i];
             if (map.containsKey(complement)) {
                 return new int[]{map.get(complement), i};
-            } else {
-                map.put(nums[i], i);
             }
+            map.put(nums[i], i);
         }
         throw new IllegalArgumentException("No two sum solution");
     }
