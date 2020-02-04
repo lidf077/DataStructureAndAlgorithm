@@ -43,3 +43,12 @@ class _3_无重复字符的最长子串 {
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
+
+/**
+ eg   abca
+        start   end   res       map            滑动窗口范围
+         0       0     1        a->1                a
+         0       1     2        a->1,b->2           a,b
+         0       2     3        a->1,b->2,c->3      a,b,c
+         1       3     3        a->4,b->2,c->3      b,c,a
+*/
