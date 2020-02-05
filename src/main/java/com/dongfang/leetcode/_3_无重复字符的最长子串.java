@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //leetcode submit region begin(Prohibit modification and deletion)
-class _3_无重复字符的最长子串 {
+public class _3_无重复字符的最长子串 {
     public int lengthOfLongestSubstring(String s) {
         int res = 0;
         Map<Character, Integer> map = new HashMap<>();
