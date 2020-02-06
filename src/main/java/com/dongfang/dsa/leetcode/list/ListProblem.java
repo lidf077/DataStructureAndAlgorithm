@@ -1,7 +1,5 @@
 package com.dongfang.dsa.leetcode.list;
 
-import javax.management.NotificationEmitter;
-
 public class ListProblem {
     private static class ListNode {
         int val;
