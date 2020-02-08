@@ -2,7 +2,7 @@ package com.dongfang.dsa.structure.ch1_list.linked.circle;
 
 import com.dongfang.dsa.structure.ch1_list.AbstractList;
 
-public class SingleCircledLinkedList<E> extends AbstractList<E> {
+public class SingleLinkedCircularList<E> extends AbstractList<E> {
     private Node<E> first;
 
     private static class Node<E> {
