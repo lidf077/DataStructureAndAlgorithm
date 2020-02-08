@@ -56,6 +56,9 @@ public class ArrayList<E> extends AbstractList<E> {
             elements[i] = null;
         }
         size = 0;
+        if (elements != null && elements.length > DEFAULT_CAPACITY) {
+            elements = (E[]) new Object[DEFAULT_CAPACITY];
+        }
     }
 
     /*  *//**
@@ -182,7 +185,7 @@ public class ArrayList<E> extends AbstractList<E> {
      * 动态数组缩容
      * 如果内存使用比较紧张，动态数组有比较多的剩余空间，可以考虑进行缩容操作
      * 比如剩余空间占总容量的一半时，就进行缩容
-     *
+     * <p>
      * 如果扩容倍数，缩容时机不得当，有可能会导致复杂度震荡
      * 扩容倍数与缩容倍数不要相等
      */

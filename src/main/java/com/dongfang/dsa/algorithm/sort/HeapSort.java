@@ -11,6 +11,7 @@ public class HeapSort<T extends Comparable> extends Sort<T> {
     private void heapSort() {
         while (heapSize > 1) {
             // 交换堆顶元素和尾部元素
+            // 建堆 121
             swap(0, heapSize - 1);
 
             // 堆的大小减1

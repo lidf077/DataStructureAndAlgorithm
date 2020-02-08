@@ -1,5 +1,6 @@
 package com.dongfang.dsa.algorithm.sort;
 
+// 每一轮扫描中选出最值，交换位置
 public class SelectionSort<T extends Comparable> extends Sort<T> {
     @Override
     protected void sort() {

@@ -12,8 +12,7 @@ public class LinkedList<E> extends AbstractList<E> {
         Node<E> prev;
         Node<E> next;
 
-        // 创建一个节点，存放此节点的值与指向的下一个节点
-        public Node(Node<E> prev, E element, Node<E> next) {
+        Node(Node<E> prev, E element, Node<E> next) {
             this.prev = prev;
             this.element = element;
             this.next = next;
@@ -25,7 +24,7 @@ public class LinkedList<E> extends AbstractList<E> {
         first = null;
         last = null;
         size = 0;
-        // 被局部变量所指向的对象，是gc root对象
+        // gc root被局部变量所指向的对象，没有被gc root所引用，就直接释放内存了
     }
 
     @Override
@@ -46,11 +45,25 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-        if (index == 0) {
-            first = new Node<>(element, first);
+
+        if (index == size) {
+            Node<E> oldLast = last;
+            last = new Node<>(last, element, null);
+            if (oldLast == null) { // 链表添加第一个元素
+                first = last;
+            } else {
+                oldLast.next = last;
+            }
         } else {
-            Node<E> prev = node(index - 1);
-            prev.next = new Node<>(element, prev.next);
+            Node<E> next = node(index);
+            Node<E> prev = next.prev;
+            Node<E> node = new Node<>(prev, element, next);
+            next.prev = node;
+            if (prev == null) {
+                first = node;
+            } else {
+                prev.next = node;
+            }
         }
         size++;
     }
@@ -58,18 +71,23 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        E old;
-        if (index == 0) {
-            old = first.element;
-            first = first.next;
+
+        Node<E> node = node(index);
+        Node<E> prev = node.prev;
+        Node<E> next = node.next;
+        if (prev == null) { // index == 0
+            first = next;
         } else {
-            Node<E> prev = node(index - 1);
-            old = prev.next.element;
-            prev.next = prev.next.next;
+            prev.next = next;
+        }
+
+        if (next == null) { // index = size - 1
+            last = prev;
+        } else {
+            next.prev = prev;
         }
         size--;
-
-        return old;
+        return node.element;
     }
 
     @Override
