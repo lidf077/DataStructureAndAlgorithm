@@ -1,31 +1,26 @@
-package com.dongfang.dsa.structure.ch1_list.linked;
+package com.dongfang.dsa.structure.ch1_list.linked.circle;
 
 import com.dongfang.dsa.structure.ch1_list.AbstractList;
 
-public class LinkedList<E> extends AbstractList<E> {
+public class SingleCircledLinkedList<E> extends AbstractList<E> {
     private Node<E> first;
-    private Node<E> last;
 
     private static class Node<E> {
         // 只用在里面，不用private
         E element;
-        Node<E> prev;
         Node<E> next;
 
-        Node(Node<E> prev, E element, Node<E> next) {
-            this.prev = prev;
+        // 创建一个节点，存放此节点的值与指向的下一个节点
+        Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
     }
 
-    // 官方的LinkedList将每个节点内容置为null，因此其中可能有迭代器引用
     @Override
     public void clear() {
         first = null;
-        last = null;
         size = 0;
-        // gc root被局部变量所指向的对象，没有被gc root所引用，就直接释放内存了
     }
 
     @Override
@@ -46,25 +41,14 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-
-        if (index == size) {
-            Node<E> oldLast = last;
-            last = new Node<>(last, element, null);
-            if (oldLast == null) { // 链表添加第一个元素
-                first = last;
-            } else {
-                oldLast.next = last;
-            }
+        if (index == 0) {
+            // 拿到最后一个节点
+            Node<E> last = (size == 0) ? first : node(size - 1);
+            first = new Node<>(element, first);
+            last.next = first;
         } else {
-            Node<E> next = node(index);
-            Node<E> prev = next.prev;
-            Node<E> node = new Node<>(prev, element, next);
-            next.prev = node;
-            if (prev == null) {
-                first = node;
-            } else {
-                prev.next = node;
-            }
+            Node<E> prev = node(index - 1);
+            prev.next = new Node<>(element, prev.next);
         }
         size++;
     }
@@ -72,23 +56,24 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-
-        Node<E> node = node(index);
-        Node<E> prev = node.prev;
-        Node<E> next = node.next;
-        if (prev == null) { // index == 0
-            first = next;
+        E old;
+        if (index == 0) {
+            old = first.element;
+            if (size == 1) {
+                first = null;
+            } else {
+                Node<E> last = node(size - 1);
+                first = first.next;
+                last.next = first;
+            }
         } else {
-            prev.next = next;
-        }
-
-        if (next == null) { // index = size - 1
-            last = prev;
-        } else {
-            next.prev = prev;
+            Node<E> prev = node(index - 1);
+            old = prev.next.element;
+            prev.next = prev.next.next;
         }
         size--;
-        return node.element;
+
+        return old;
     }
 
     @Override
@@ -133,20 +118,20 @@ public class LinkedList<E> extends AbstractList<E> {
         return res.toString();
     }
 
+
+    /**
+     * 获取index位置对应的节点对象
+     *
+     * @param index
+     * @return
+     */
     private Node<E> node(int index) {
         rangeCheck(index);
-        if (index < (size >> 1)) {
-            Node<E> node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-            return node;
-        } else {
-            Node<E> node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-            return node;
+        Node<E> node = first;
+        // 循环走index次
+        for (int i = 0; i < index; i++) {
+            node = node.next;
         }
+        return node;
     }
 }
