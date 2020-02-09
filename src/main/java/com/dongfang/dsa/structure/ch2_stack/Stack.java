@@ -31,4 +31,8 @@ public class Stack<E> {
         return stack.get(stack.size() - 1);
     }
 
+    public void clear() {
+        stack.clear();
+    }
+
 }

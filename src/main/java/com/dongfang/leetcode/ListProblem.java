@@ -1,4 +1,4 @@
-package com.dongfang.dsa.leetcode.list;
+package com.dongfang.leetcode;
 
 public class ListProblem {
     private static class ListNode {
