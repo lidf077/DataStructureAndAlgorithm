@@ -12,9 +12,6 @@ import com.dongfang.dsa.structure.ch1_list.linked.LinkedList;
  *
  * 队头：只能从队头移除元素，一般叫做deQueue 出队
  *
- * DeQueue
- *      双端队列是能在头尾两端添加、删除的队列
- *      英文deque 是double end queue的简称
  * @param <E>
  */
 public class Queue<E> {
@@ -33,7 +30,7 @@ public class Queue<E> {
         return queue.isEmpty();
     }
 
-    public void enqueue(E element) {
+    public void enQueue(E element) {
         queue.add(element);
     }
 
