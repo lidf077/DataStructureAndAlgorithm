@@ -1,7 +1,8 @@
 package com.dongfang.dsa.structure.ch3_queue;
 
-import com.dongfang.dsa.structure.ch1_list.List;
-import com.dongfang.dsa.structure.ch1_list.linked.LinkedList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 队列是一种特殊的线性表，只能在头尾两端进行操作
