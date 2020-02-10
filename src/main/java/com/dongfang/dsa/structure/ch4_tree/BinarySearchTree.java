@@ -3,7 +3,9 @@ package com.dongfang.dsa.structure.ch4_tree;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 public class BinarySearchTree<E> implements BinaryTreeInfo {
     private int size;
@@ -58,7 +60,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
                 node = node.right;
             } else if (compareRes < 0) {
                 node = node.left;
-            } else { // compareRes = 0
+            } else { // compareRes = 0 对象的比较结果一样，但是对象可能不一样
                 node.element = element;
                 return;
             }
@@ -88,6 +90,13 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     private void elementNotNullCheck(E element) {
         Objects.requireNonNull(element, "element must not be null");
     }
+
+
+    public interface Visitor<E> {
+        void visit(E element);
+    }
+
+
     public void preOrderTraversal() {
         preOrderTraversal(root);
     }
@@ -96,6 +105,17 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         //
         if (node == null) return;
         System.out.println(node.element);
+        preOrderTraversal(node.left);
+        preOrderTraversal(node.right);
+    }
+
+    public void preOrderTraversal(Visitor<E> visitor) {
+        preOrderTraversal(root, visitor);
+    }
+
+    private void preOrderTraversal(Node<E> node, Visitor<E> visitor) {
+        if (node == null || visitor == null) return;
+        visitor.visit(node.element);
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
@@ -111,8 +131,31 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         inOrderTraversal(node.right);
     }
 
+    public void inOrderTraversal(Visitor<E> visitor) {
+        inOrderTraversal(root, visitor);
+    }
+
+    private void inOrderTraversal(Node<E> node, Visitor<E> visitor) {
+        if (node == null || visitor == null) return;
+        inOrderTraversal(node.left);
+        visitor.visit(node.element);
+        inOrderTraversal(node.right);
+    }
+
     public void postOrderTraversal() {
         postOrderTraversal(root);
+    }
+
+    private void postOrderTraversal(Visitor<E> visitor) {
+        postOrderTraversal(root, visitor);
+    }
+
+    private void postOrderTraversal(Node<E> node, Visitor<E> visitor) {
+        if (node == null || visitor == null) return;
+
+        postOrderTraversal(node.left, visitor);
+        postOrderTraversal(node.right, visitor);
+        visitor.visit(node.element);
     }
 
     private void postOrderTraversal(Node<E> node) {
@@ -138,6 +181,26 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
         }
     }
+
+    // 要做什么，交给visitor
+    public void levelOrderTraversal(Visitor<E> visitor) {
+        if (root == null || visitor == null) return;
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            Node<E> queueHead = queue.poll();
+            visitor.visit(queueHead.element);
+            if (queueHead.left != null) {
+                queue.offer(queueHead.left);
+            }
+            if (queueHead.right != null) {
+                queue.offer(queueHead.right);
+            }
+        }
+    }
+
     public void remove(E element) {
 
     }

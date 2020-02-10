@@ -35,4 +35,16 @@ public class TreeDemo {
         }
         BinaryTrees.println(bst);
     }
+
+    @Test
+    public void testTraversal() {
+        int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1};
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        for (int datum : data) {
+            bst.add(datum);
+        }
+
+        BinaryTrees.println(bst);
+        bst.levelOrderTraversal(e -> System.out.print("_" + e));
+    }
 }
