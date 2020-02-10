@@ -88,7 +88,56 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     private void elementNotNullCheck(E element) {
         Objects.requireNonNull(element, "element must not be null");
     }
+    public void preOrderTraversal() {
+        preOrderTraversal(root);
+    }
 
+    private void preOrderTraversal(Node<E> node) {
+        //
+        if (node == null) return;
+        System.out.println(node.element);
+        preOrderTraversal(node.left);
+        preOrderTraversal(node.right);
+    }
+
+    public void inOrderTraversal() {
+        inOrderTraversal(root);
+    }
+
+    private void inOrderTraversal(Node<E> node) {
+        if (node == null) return;
+        inOrderTraversal(node.left);
+        System.out.println(node.element);
+        inOrderTraversal(node.right);
+    }
+
+    public void postOrderTraversal() {
+        postOrderTraversal(root);
+    }
+
+    private void postOrderTraversal(Node<E> node) {
+        if (node == null) return;
+
+        postOrderTraversal(node.left);
+        postOrderTraversal(node.right);
+        System.out.println(node.element);
+    }
+
+    public void levelOrderTraversal() {
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            Node<E> queueHead = queue.poll();
+            System.out.println(queueHead.element);
+            if (queueHead.left != null) {
+                queue.offer(queueHead.left);
+            }
+            if (queueHead.right != null) {
+                queue.offer(queueHead.right);
+            }
+        }
+    }
     public void remove(E element) {
 
     }
