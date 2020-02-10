@@ -1,6 +1,7 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTrees;
+import com.dongfang.dsa.structure.ch4_tree.BinarySearchTree.Visitor;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -38,13 +39,18 @@ public class TreeDemo {
 
     @Test
     public void testTraversal() {
-        int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1};
+        int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1, 0};
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         for (int datum : data) {
             bst.add(datum);
         }
 
         BinaryTrees.println(bst);
-        bst.levelOrderTraversal(e -> System.out.print("_" + e));
+/*        bst.levelOrderTraversal(new Visitor<Integer>() {
+            boolean visit(Integer element) {
+                return false;
+            }
+        });*/
+        System.out.println(bst.toString());
     }
 }
