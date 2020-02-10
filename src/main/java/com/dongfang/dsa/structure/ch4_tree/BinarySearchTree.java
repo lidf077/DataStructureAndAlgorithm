@@ -59,7 +59,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             } else if (compareRes < 0) {
                 node = node.left;
             } else { // compareRes = 0
-                node.element = element
+                node.element = element;
                 return;
             }
         }
