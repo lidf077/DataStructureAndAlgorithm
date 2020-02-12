@@ -53,4 +53,19 @@ public class TreeDemo {
         });*/
         System.out.println(bst.toString());
     }
+
+    @Test
+    public void testRemoveFromBst() {
+        int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1};
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        for (int datum : data) {
+            bst.add(datum);
+        }
+
+        BinaryTrees.println(bst);
+        bst.remove(7);
+        BinaryTrees.println(bst);
+        System.out.println("bst.contains(11) = " + bst.contains(11));
+        System.out.println("bst.contains(7) = " + bst.contains(7));
+    }
 }
