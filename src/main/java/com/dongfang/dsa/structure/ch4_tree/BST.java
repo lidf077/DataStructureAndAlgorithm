@@ -2,6 +2,17 @@ package com.dongfang.dsa.structure.ch4_tree;
 
 import java.util.Comparator;
 
+/**
+ * 复杂度分析:
+ *      增删改查的次数与树的高度有关，操作次数最坏为树的高度
+ *      o(h) = o(logN)
+ *
+ *      但是，如果是从小到大添加，就会形成一个链表，树的高度就和元素的个数相同
+ *          二叉搜索树退化成链表 n=100万，最你高度20
+ *
+ *          删除节点时，也可能导致二叉搜索树退化成链表
+ * @param <E>
+ */
 @SuppressWarnings("all")
 public class BST<E> extends BinaryTree {
     private Comparator<E> comparator;
@@ -42,6 +53,7 @@ public class BST<E> extends BinaryTree {
             } else if (compareRes < 0) {
                 node = node.left;
             } else { // compareRes = 0 对象的比较结果一样，但是对象可能不一样
+                // 也可以添加上，形成链表
                 node.element = element;
                 return;
             }
