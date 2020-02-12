@@ -2,7 +2,6 @@ package com.dongfang.dsa.structure.ch4_tree;
 
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 
-import java.io.PipedReader;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -212,6 +211,189 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
     }
 
+
+    public int height() {
+        return height(root);
+    }
+
+    // 一个节点的高度为左右子树的最高+1
+    private int height(Node<E> node) {
+        if (node == null) return 0;
+        return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+    public int heightByIterator() {
+        return heightByIterator(root);
+    }
+
+    private int heightByIterator(Node<E> node) {
+        if (node == null) return 0;
+
+        int height = 0;
+        int levelSize = 1; // 存储每一层的元素数量
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            Node<E> queueHead = queue.poll();
+            levelSize--; // 每取出一个，这一层的元素数量减1
+
+            // 访问完一层，height++
+            // 怎么知道访问完了一层，如果知道每一层的节点个数，从队列中取出这样的数量后就知道访问完了一层
+            // 队头元素访问完了，队列中有多少个，访问完一层后，下一层中的节点个数就是队列中元素的个数，队列的长度
+
+            if (queueHead.left != null) {
+                queue.offer(queueHead.left);
+            }
+
+            if (queueHead.right != null) {
+                queue.offer(queueHead.right);
+            }
+
+            if (levelSize == 0) { // 意味着即将访问下一层
+                levelSize = queue.size();
+                height++;
+            }
+        }
+
+        return height;
+    }
+
+    /**
+     * 如果树为空，返回false
+     * 如果树不为空，开始层序遍历二叉树，用队列
+     * 如果node.left != null && node.right != null， node.left node.right入队
+     * 如果node.left == null && node.right != null，返回false
+     * 如果node.left != null && node.right == null
+     * 或者 node.left == null && node.right == null，接下来都是叶子节点了
+     * 那么后面遍历的节点都应该为叶子节点，才是完全二叉树
+     * 否则返回false
+     *
+     * @return
+     */
+/*    public boolean isComplete() {
+        if (root == null) return false;
+
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        boolean isLeaf = false;
+        while (!queue.isEmpty()) {
+            Node<E> queueHead = queue.poll();
+            if (isLeaf && !queueHead.isLeaf()) return false;
+
+            if (queueHead.hasTwoChildren()) {
+                queue.offer(queueHead.left);
+                queue.offer(queueHead.right);
+            } else if (queueHead.left == null && queueHead.right != null) {
+                return false;
+            } else { // 后面遍历的节点必须是叶子节点
+                isLeaf = true;
+                if (queueHead.left != null) {
+                    queue.offer(queueHead.left);
+                }
+            }
+        }
+        return true;
+    }*/
+
+    // 先写层序遍历
+    public boolean isComplete() {
+        if (root == null) return false;
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(root);
+
+        boolean isLeaf = false;
+        while (!isEmpty()) {
+            Node<E> node = queue.poll();
+
+            if (isLeaf && !node.isLeaf()) return false;
+
+            if (node.left != null) {
+                queue.offer(node.left);
+            } else if (node.right != null) {// 左边空，右边不为空
+                return false;
+            }
+
+            if (node.right != null) {
+                queue.offer(node.right);
+            } else { // node.right == null，后面的都得是叶子
+                isLeaf = true;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 前驱节点：中序遍历时的前一个节点
+     * 如果是二叉搜索树，前驱节点就是前一个比它小的节点
+     * node.left != null
+     * predecessor = node.left.right.right.right
+     * 终止条件 right 为null
+     * <p>
+     * node.left = null
+     * predecessor = node.parent.parent.parent
+     * 终止条件：node在parent的右子树中
+     * <p>
+     * node.left == null && node.parent = null 那就没有前驱节点
+     *
+     * @param node
+     * @return
+     */
+    private Node<E> predecessor(Node<E> node) {
+        Node<E> p = node.left;
+
+        // 前驱节点在左子树中，left.right.right.right.right
+        if (p != null) {
+            while (p.right != null) {
+                p = p.right;
+            }
+            return p;
+        }
+
+        // 从祖父节点，祖父节点中寻找前驱节点
+        while (node.parent != null && node == node.parent.left) {
+            node = node.parent;
+        }
+        // node.parent == null
+        // node == node.parent.right
+        return node.parent;
+    }
+
+    /**
+     * 后继节点：中序遍历时的后一个节点
+     * 如果是二叉搜索树，后继节点是后一个比它大的节点
+     * node.right != null
+     * successor = node.right.left.left.left...
+     * 终止条件：left 为null
+     * node.right == null && node.parent != null
+     * successor = node.parent.parent.parent...
+     * 终止条件：node在parent的左子树中
+     * node.right == null && node.parent == null 没有前驱节点
+     *
+     * @param node
+     */
+    private Node<E> successor(Node<E> node) {
+        Node<E> p = node.right;
+
+        // 前驱节点在左子树中，right.left.left.left.left
+        if (p != null) {
+            while (p.left != null) {
+                p = p.left;
+            }
+            return p;
+        }
+
+        // 从祖父节点，祖父节点中寻找后继节点
+        while (node.parent != null && node == node.parent.right) {
+            node = node.parent;
+        }
+
+        return node.parent;
+    }
+
+
     public void remove(E element) {
 
     }
@@ -261,9 +443,17 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         Node<E> right;
         Node<E> parent;
 
-        public Node(E element, Node<E> parent) {
+        Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
+        }
+
+        boolean isLeaf() {
+            return left == null && right == null;
+        }
+
+        boolean hasTwoChildren() {
+            return left != null && right != null;
         }
     }
 }
