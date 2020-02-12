@@ -1,7 +1,6 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTrees;
-import com.dongfang.dsa.structure.ch4_tree.BinarySearchTree.Visitor;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -14,7 +13,7 @@ public class TreeDemo {
 
     @Test
     public void testComparator() {
-        BinarySearchTree<Person> bst = new BinarySearchTree<>(new Comparator<Person>() {
+        BST<Person> bst = new BST<>(new Comparator<Person>() {
             @Override
             public int compare(Person o1, Person o2) {
                 return o1.age - o2.age;
@@ -22,15 +21,15 @@ public class TreeDemo {
         });
 
         // 为每个bst定制了比较器
-        BinarySearchTree<Person> bst1 = new BinarySearchTree<>((o1, o2) -> (int) (o1.height - o2.height));
+        BST<Person> bst1 = new BST<>((o1, o2) -> (int) (o1.height - o2.height));
 
-        BinarySearchTree<Integer> bst2 = new BinarySearchTree<>();
+        BST<Integer> bst2 = new BST<>();
     }
 
     @Test
     public void testAdd() {
         int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1};
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        BST<Integer> bst = new BST<>();
         for (int datum : data) {
             bst.add(datum);
         }
@@ -40,7 +39,7 @@ public class TreeDemo {
     @Test
     public void testTraversal() {
         int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1, 0};
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        BST<Integer> bst = new BST<>();
         for (int datum : data) {
             bst.add(datum);
         }
@@ -57,7 +56,7 @@ public class TreeDemo {
     @Test
     public void testRemoveFromBst() {
         int[] data = {7, 4, 9, 2, 5, 8, 11, 3, 12, 1};
-        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        BST<Integer> bst = new BST<>();
         for (int datum : data) {
             bst.add(datum);
         }

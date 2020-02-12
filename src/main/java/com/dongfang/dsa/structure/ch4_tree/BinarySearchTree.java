@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
+@SuppressWarnings("all")
 public class BinarySearchTree<E> implements BinaryTreeInfo {
     private int size;
     private Node<E> root;
@@ -30,7 +31,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     public void clear() {
-        root = null;
+
     }
 
     public void add(E element) {
@@ -436,6 +437,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         size--;
     }
 
+    public boolean contains(E element) {
+        return node(element) != null;
+    }
 
     private Node<E> node(E element) {
         Node<E> node = root;
@@ -446,10 +450,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             else node = node.left;
         }
         return null;
-    }
-
-    public boolean contains(E element) {
-        return node(element) != null;
     }
 
     @Override
