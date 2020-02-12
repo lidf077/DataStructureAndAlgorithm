@@ -1,4 +1,14 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
-public class AVLTree {
+import java.util.Comparator;
+
+public class AVLTree<E> extends BST {
+
+    public AVLTree() {
+        this(null);
+    }
+
+    public AVLTree(Comparator comparator) {
+        super(comparator);
+    }
 }
