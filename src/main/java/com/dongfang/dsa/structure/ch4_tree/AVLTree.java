@@ -23,7 +23,7 @@ public class AVLTree<E> extends BST<E> {
             } else {
                 // 恢复平衡
                 rebalance(node);
-                break; // 找到第一个不平衡的，恢复平衡后就中止
+                break; // 找到第一个不平衡的，恢复平衡后就中止，整棵树就平衡了，没必要向上访问
             }
         }
     }
@@ -87,11 +87,44 @@ public class AVLTree<E> extends BST<E> {
         }
     }
 
-    private void rotateLeft(Node<E> node) {
 
+    /*
+     *                    g--|                    |--p--|
+     *                    |--p--|                 g--|  n
+     *                    c     n                    c
+     */
+    private void rotateLeft(Node<E> grand) {
+        // 更新指向
+        Node<E> parent = grand.right;
+        Node<E> child = parent.left;
+        grand.right = child;
+        parent.left = grand;
+
+        // 更新父节点
+        // parent成为子树的根节点
+        parent.parent = grand.parent;
+        if (grand.isLeftChild()) {
+            grand.parent.left = parent;
+        } else if (grand.isRightChild()){
+            grand.parent.right = parent;
+        } else { // grand是root节点
+            root = parent;
+        }
+
+        // 更新child的parent
+        if (child != null) {
+            child.parent = grand;
+        }
+
+        // 更新grand的parent
+        grand.parent = parent;
+
+        // 更新高度
+        updateHeight(grand);
+        updateHeight(parent);
     }
 
-    private void rotateRight(Node<E> node) {
+    private void rotateRight(Node<E> grand) {
 
     }
 
