@@ -67,4 +67,9 @@ public class TreeDemo {
         System.out.println("bst.contains(11) = " + bst.contains(11));
         System.out.println("bst.contains(7) = " + bst.contains(7));
     }
+
+    @Test
+    public void testAvlTree() {
+
+    }
 }

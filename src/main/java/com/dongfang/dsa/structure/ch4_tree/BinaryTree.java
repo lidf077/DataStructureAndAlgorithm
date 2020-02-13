@@ -257,6 +257,10 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         return node.parent;
     }
 
+    protected Node<E> buildNode(E element, Node<E> parent) {
+        return new Node<>(element, parent);
+    }
+
     @Override
     public Object root() {
         return root;
@@ -300,6 +304,14 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
         boolean hasTwoChildren() {
             return left != null && right != null;
+        }
+
+        boolean isLeftChild() {
+            return parent != null && this == parent.left;
+        }
+
+        boolean isRightChild() {
+            return parent != null && this == parent.right;
         }
     }
 

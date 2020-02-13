@@ -1,5 +1,6 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
+import java.awt.geom.AffineTransform;
 import java.util.Comparator;
 
 /**
@@ -30,7 +31,8 @@ public class BST<E> extends BinaryTree {
 
         // 添加第一个节点
         if (root == null) {
-            root = new Node<>(element, null);
+            root = buildNode(element, null);
+            afterAdd(root);
             size++;
             return;
         }
@@ -60,15 +62,23 @@ public class BST<E> extends BinaryTree {
         }
 
         // 看看插入到父节点的哪个位置
-        Node<E> newNode = new Node<>(element, parent);
+        Node<E> newNode = buildNode(element, parent);
         if (compareRes > 0) {
             parent.right = newNode;
         } else {
             parent.left = newNode;
         }
 
+        // 新添加节点之后的处理
+        afterAdd(newNode);
         size++;
     }
+
+    /**
+     * 添加新结点之后的调整
+     * @param node 新添加的节点
+     */
+    protected void afterAdd(Node<E> node) {}
 
     private int compare(E e1, E e2) {
         if (comparator != null) {
