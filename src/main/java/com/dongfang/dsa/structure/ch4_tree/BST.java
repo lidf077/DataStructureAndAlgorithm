@@ -117,19 +117,31 @@ public class BST<E> extends BinaryTree {
             } else /*if (node == node.parent.right)*/ {
                 node.parent.right = replacement;
             }
-
+            // 删除节点之后的处理
+            afterRemove(node);
         } else if (node.parent == null) { // node为叶子节点并且是根节点
             root = null;
+            // 删除节点之后的处理
+            afterRemove(node);
         } else { // node是叶子节点，但不是根节点
             if (node == node.parent.left) { // 左叶子
                 node.parent.left = null;
             } else /*if (node == node.parent.right)*/ { // 右叶子
                 node.parent.right = null;
             }
+            // 删除节点之后的处理
+            afterRemove(node);
         }
 
         size--;
     }
+
+
+    /**
+     * 删除结点之后的调整
+     * @param node 被删除的节点
+     */
+    protected void afterRemove(Node<E> node) {}
 
     public boolean contains(E element) {
         return node(element) != null;

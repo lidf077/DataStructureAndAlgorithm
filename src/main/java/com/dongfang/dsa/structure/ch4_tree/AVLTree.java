@@ -2,6 +2,21 @@ package com.dongfang.dsa.structure.ch4_tree;
 
 import java.util.Comparator;
 
+/**
+ * 总结
+ *      添加：
+ *          可能会导致所有祖先节点都失衡
+ *          只要让高度最低的失衡节点恢复平衡，整棵树就恢复平衡，仅需要O(1)次调整
+ *
+ *      删除：
+ *          只可能会导致父节点或者祖先节点失衡，只可能导致一个节点失衡
+ *          让父节点恢复平衡后，可能会导致更高层的祖先节点失衡，最多需要O(logN)次调整
+ *      平均时间复杂度：
+ *          搜索：O(logN)
+ *          添加：O(logN) 仅需要 O(1) 次旋转操作
+ *          删除：O(logN) 最多需要 O(logN) 次旋转操作
+ * @param <E>
+ */
 @SuppressWarnings("all")
 public class AVLTree<E> extends BST<E> {
 
@@ -24,6 +39,25 @@ public class AVLTree<E> extends BST<E> {
                 // 恢复平衡
                 reBalance(node);
                 break; // 找到第一个不平衡的，恢复平衡后就中止，整棵树就平衡了，没必要向上访问
+            }
+        }
+    }
+
+
+    /**
+     * 删除导致的失衡
+     * 只可能会导致父节点失衡
+     * 除父节点以外的其他节点，都不可能失衡
+    * */
+    @Override
+    protected void afterRemove(Node<E> node) {
+        while ((node = node.parent) != null) {
+            if (isBalanced(node)) {
+                // 平衡，更新高度，一直找parent的过程中更新高度，性能更高
+                updateHeight(node);
+            } else {
+                // 恢复平衡
+                reBalance(node);
             }
         }
     }
