@@ -22,7 +22,7 @@ public class AVLTree<E> extends BST<E> {
                 updateHeight(node);
             } else {
                 // 恢复平衡
-                rebalance(node);
+                reBalance(node);
                 break; // 找到第一个不平衡的，恢复平衡后就中止，整棵树就平衡了，没必要向上访问
             }
         }
@@ -85,6 +85,61 @@ public class AVLTree<E> extends BST<E> {
                 rotateLeft(grand);
             }
         }
+    }
+
+    private void reBalance(Node<E> grand) {
+        Node<E> parent = ((AVLNode<E>) grand).tallerChild();
+        Node<E> node = ((AVLNode<E>) parent).tallerChild();
+        if (parent.isLeftChild()) {
+            if (node.isLeftChild()) { // LL
+                rotate(grand, node.left, node, node.right, parent, parent.left, grand, grand.left);
+            } else { // LR
+                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
+            }
+        } else {
+            if (node.isLeftChild()) { // RL
+                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
+            } else { // RR
+                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
+            }
+        }
+    }
+
+    private void rotate(
+            Node<E> r, // 子树的根节点
+            Node<E> a, Node<E> b, Node<E> c,
+            Node<E> d,
+            Node<E> e, Node<E> f, Node<E> g) {
+
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+            r.parent.left = d;
+        } else if (r.isRightChild()) {
+            r.parent.right = d;
+        } else {
+            root = d; //让d成为这个子树的根节点
+        }
+
+        // a - b - c
+        b.left = a;
+        if (a != null) a.parent = b;
+        b.right = c;
+        if (c != null) c.parent = b;
+        updateHeight(b);
+
+        //  e - f - g
+        f.left = e;
+        if (e != null) e.parent = f;
+        f.right = g;
+        if (g != null) g.parent = f;
+        updateHeight(f);
+
+        // b - d - f
+        d.left = b;
+        d.right = f;
+        b.parent = d;
+        f.parent = d;
+        updateHeight(d);
     }
 
 
