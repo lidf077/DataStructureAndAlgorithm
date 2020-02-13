@@ -61,7 +61,7 @@ public class AVLTree<E> extends BST<E> {
                  *                 p               n          p      g
                  *                    n         p
                  */
-                 // 对p进行左旋转，再对g进行右旋转
+                // 对p进行左旋转，再对g进行右旋转
                 rotateLeft(parent);
                 rotateRight(grand);
             }
@@ -100,12 +100,31 @@ public class AVLTree<E> extends BST<E> {
         grand.right = child;
         parent.left = grand;
 
+        afterRotate(grand, parent, child);
+    }
+
+    /*
+     *                 |--g       |--p--|
+     *              |--p--|       n  |--g
+     *              n     c          c
+     */
+    private void rotateRight(Node<E> grand) {
+        // 更新指向
+        Node<E> parent = grand.left;
+        Node<E> child = parent.right;
+        grand.left = child;
+        parent.right = grand;
+
+        afterRotate(grand, parent, child);
+    }
+
+    private void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
         // 更新父节点
         // parent成为子树的根节点
         parent.parent = grand.parent;
         if (grand.isLeftChild()) {
             grand.parent.left = parent;
-        } else if (grand.isRightChild()){
+        } else if (grand.isRightChild()) {
             grand.parent.right = parent;
         } else { // grand是root节点
             root = parent;
@@ -122,10 +141,6 @@ public class AVLTree<E> extends BST<E> {
         // 更新高度
         updateHeight(grand);
         updateHeight(parent);
-    }
-
-    private void rotateRight(Node<E> grand) {
-
     }
 
     private boolean isBalanced(Node<E> node) {
