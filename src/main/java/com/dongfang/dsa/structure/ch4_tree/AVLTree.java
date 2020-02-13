@@ -90,51 +90,51 @@ public class AVLTree<E> extends BST<E> {
     private void reBalance(Node<E> grand) {
         Node<E> parent = ((AVLNode<E>) grand).tallerChild();
         Node<E> node = ((AVLNode<E>) parent).tallerChild();
-        if (parent.isLeftChild()) {
+        if (parent.isLeftChild()) { // L
             if (node.isLeftChild()) { // LL
-                rotate(grand, node.left, node, node.right, parent, parent.left, grand, grand.left);
+                rotate(grand, node, node.right, parent, parent.right, grand);
             } else { // LR
-                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
+                rotate(grand, parent, node.left, node, node.right, grand);
             }
-        } else {
+        } else { // R
             if (node.isLeftChild()) { // RL
-                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
+                rotate(grand, grand, node.left, node, node.right, parent);
             } else { // RR
-                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
+                rotate(grand, grand, parent.left, parent, node.left, node);
             }
         }
     }
 
     private void rotate(
             Node<E> r, // 子树的根节点
-            Node<E> a, Node<E> b, Node<E> c,
+            Node<E> b, Node<E> c,
             Node<E> d,
-            Node<E> e, Node<E> f, Node<E> g) {
-
+            Node<E> e, Node<E> f) {
+        // 让d成为这棵子树的根节点
         d.parent = r.parent;
         if (r.isLeftChild()) {
             r.parent.left = d;
         } else if (r.isRightChild()) {
             r.parent.right = d;
         } else {
-            root = d; //让d成为这个子树的根节点
+            root = d;
         }
 
-        // a - b - c
-        b.left = a;
-        if (a != null) a.parent = b;
+        //b-c
         b.right = c;
-        if (c != null) c.parent = b;
+        if (c != null) {
+            c.parent = b;
+        }
         updateHeight(b);
 
-        //  e - f - g
+        // e-f
         f.left = e;
-        if (e != null) e.parent = f;
-        f.right = g;
-        if (g != null) g.parent = f;
+        if (e != null) {
+            e.parent = f;
+        }
         updateHeight(f);
 
-        // b - d - f
+        // b-d-f
         d.left = b;
         d.right = f;
         b.parent = d;

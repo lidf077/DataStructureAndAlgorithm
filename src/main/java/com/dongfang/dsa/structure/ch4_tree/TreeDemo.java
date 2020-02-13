@@ -3,6 +3,7 @@ package com.dongfang.dsa.structure.ch4_tree;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTrees;
 import org.junit.Test;
 
+import java.awt.image.DataBufferUShort;
 import java.util.Comparator;
 
 public class TreeDemo {
@@ -70,10 +71,14 @@ public class TreeDemo {
 
     @Test
     public void testAvlTree() {
+        // 1, 9, 21, 27, 30, 36, 40, 43, 44, 45, 46, 47, 48, 56, 64, 70, 71, 77, 90, 94
         int[] data = {90, 36, 46, 94, 47, 45, 71, 48, 43, 64, 9, 44, 21, 70, 30, 40, 56, 27, 1, 77};
         AVLTree<Integer> avlTree = new AVLTree<>();
         for (int datum : data) {
+            System.out.println("datum = " + datum);
             avlTree.add(datum);
+            BinaryTrees.println(avlTree);
+            System.out.println("-----------------------------------------------------");
         }
         BinaryTrees.println(avlTree);
 
