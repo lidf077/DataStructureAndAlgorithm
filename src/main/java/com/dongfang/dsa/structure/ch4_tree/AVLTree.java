@@ -18,7 +18,7 @@ import java.util.Comparator;
  * @param <E>
  */
 @SuppressWarnings("all")
-public class AVLTree<E> extends BST<E> {
+public class AVLTree<E> extends BBST<E> {
 
     public AVLTree() {
         this(null);
@@ -139,94 +139,19 @@ public class AVLTree<E> extends BST<E> {
         }
     }
 
-    private void rotate(
-            Node<E> r, // 子树的根节点
-            Node<E> b, Node<E> c,
-            Node<E> d,
-            Node<E> e, Node<E> f) {
-        // 让d成为这棵子树的根节点
-        d.parent = r.parent;
-        if (r.isLeftChild()) {
-            r.parent.left = d;
-        } else if (r.isRightChild()) {
-            r.parent.right = d;
-        } else {
-            root = d;
-        }
-
-        //b-c
-        b.right = c;
-        if (c != null) {
-            c.parent = b;
-        }
+    @Override
+    protected void rotate(Node<E> r, Node<E> b, Node<E> c, Node<E> d, Node<E> e, Node<E> f) {
+        super.rotate(r, b, c, d, e, f);
+        // 先更新子树高度，再更新根节点高度
         updateHeight(b);
-
-        // e-f
-        f.left = e;
-        if (e != null) {
-            e.parent = f;
-        }
         updateHeight(f);
-
-        // b-d-f
-        d.left = b;
-        d.right = f;
-        b.parent = d;
-        f.parent = d;
         updateHeight(d);
     }
 
-
-    /*
-     *                    g--|                    |--p--|
-     *                    |--p--|                 g--|  n
-     *                    c     n                    c
-     */
-    private void rotateLeft(Node<E> grand) {
-        // 更新指向
-        Node<E> parent = grand.right;
-        Node<E> child = parent.left;
-        grand.right = child;
-        parent.left = grand;
-
-        afterRotate(grand, parent, child);
-    }
-
-    /*
-     *                 |--g       |--p--|
-     *              |--p--|       n  |--g
-     *              n     c          c
-     */
-    private void rotateRight(Node<E> grand) {
-        // 更新指向
-        Node<E> parent = grand.left;
-        Node<E> child = parent.right;
-        grand.left = child;
-        parent.right = grand;
-
-        afterRotate(grand, parent, child);
-    }
-
-    private void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
-        // 更新父节点
-        // parent成为子树的根节点
-        parent.parent = grand.parent;
-        if (grand.isLeftChild()) {
-            grand.parent.left = parent;
-        } else if (grand.isRightChild()) {
-            grand.parent.right = parent;
-        } else { // grand是root节点
-            root = parent;
-        }
-
-        // 更新child的parent
-        if (child != null) {
-            child.parent = grand;
-        }
-
-        // 更新grand的parent
-        grand.parent = parent;
-
+    @Override
+    protected void afterRotate(Node<E> grand, Node<E> parent, Node<E> child) {
+        super.afterRotate(grand, parent, child);
+        // 父类的所有逻辑做完后，更新高度
         // 更新高度
         updateHeight(grand);
         updateHeight(parent);
