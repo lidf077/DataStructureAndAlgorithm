@@ -2,7 +2,8 @@ package com.dongfang.dsa.structure.ch4_tree;
 
 import java.util.Comparator;
 
-public class RBTree<E> extends BST<E> {
+@SuppressWarnings("all")
+public class RBTree<E> extends BBST<E> {
     private static final boolean RED = false;
     private static final boolean BLACK = true;
 
@@ -16,11 +17,12 @@ public class RBTree<E> extends BST<E> {
     }
 
 
+    // 添加完一个新的节点后，修复一下红黑树的性质，保证它依然是一棵红黑树
     @Override
     protected void afterAdd(Node<E> node) {
         Node<E> parent = node.parent;
 
-        // 添加的是根根节点，直接染成黑色，返回
+        // 添加的是根根节点，直接染成黑色，返回，或者是上溢到根节点
         if (parent == null) {
             black(node);
             return;
@@ -31,23 +33,44 @@ public class RBTree<E> extends BST<E> {
 
         // 叔父 节点
         Node<E> uncle = parent.sibling();
-        // 祖父节点
-        Node<E> grand = parent.parent;
+        // 祖父节点，所有的操作都要将gran染成红色，因此统一操作
+        Node<E> grand = red(parent.parent);
 
         // 叔父节点是红色
         if (isRed(uncle)) {
-            // 父节点和叔父节点染成黑色
+            // 父节点和叔父节点染成黑色，B树节点上溢
             black(parent);
             black(uncle);
 
             // 把祖父节点当作是新添加的节点
-            red(grand);
             afterAdd(grand);
             return;
         }
 
         // 叔父节点不是红色
+        if (parent.isLeftChild()) { // L
+            if (node.isLeftChild()) { // L L
+                black(parent);
+            } else { // L R
+                black(node);
+                rotateLeft(parent);
+            }
+            rotateRight(grand);
+        } else { // R
+            if (node.isLeftChild()) { // R L
+                black(node);
+                rotateRight(parent);
+            } else { // R R
+                black(parent);
+            }
+            rotateLeft(grand);
+        }
 
+    }
+
+    @Override
+    protected Node buildNode(Object element, Node parent) {
+        return new RBNode<>(element, parent);
     }
 
     private Node<E> color(Node<E> node, boolean color) {
@@ -82,6 +105,15 @@ public class RBTree<E> extends BST<E> {
 
         RBNode(E element, Node<E> parent) {
             super(element, parent);
+        }
+
+        @Override
+        public String toString() {
+            String str = "";
+            if (color == RED) {
+                str = "R->";
+            }
+            return str + element.toString();
         }
     }
 }

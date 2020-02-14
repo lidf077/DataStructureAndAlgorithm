@@ -301,7 +301,7 @@ public class TreeDemo {
     @Test
     public void testAvlTreePerformance() {
         AVLTree<Integer> avlTree = new AVLTree<>();
-        int num = 5_0_000_000;
+        int num = 10_000_000;
         long start = System.currentTimeMillis();
         for (int i = 0; i < num; i++) {
             avlTree.add(i);
@@ -313,7 +313,7 @@ public class TreeDemo {
             avlTree.remove(i);
         }
         long end = System.currentTimeMillis();
-        System.out.println("time is " + (end - start) / 1000.);
+        System.out.println("time is " + (end - mid) / 1000.);
     }
 
     @Test
@@ -333,5 +333,30 @@ public class TreeDemo {
         }
         long end = System.currentTimeMillis();
         System.out.println("time is " + (end - start) / 1000.);
+    }
+
+    @Test
+    public void testRedBlackTree() {
+        RBTree<Integer> rbTree = new RBTree<>();
+        int[] data = {89, 85, 75, 99, 10, 55, 3, 92, 35, 91, 68, 12, 60};
+        for (int datum : data) {
+            rbTree.add(datum);
+            BinaryTrees.println(rbTree);
+            System.out.println("------------------------------------");
+        }
+
+        BinaryTrees.println(rbTree);
+    }
+
+    @Test
+    public void testRedBlackTreePerformance() {
+        RBTree<Integer> rbTree = new RBTree<>();
+        int num = 1_000_000;
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < num; i++) {
+            rbTree.add(i);
+        }
+        long mid = System.currentTimeMillis();
+        System.out.println("add time is " + (mid - start) / 1000.);
     }
 }
