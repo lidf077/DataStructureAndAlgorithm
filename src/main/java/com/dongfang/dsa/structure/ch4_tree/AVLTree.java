@@ -24,7 +24,7 @@ public class AVLTree<E> extends BST<E> {
         this(null);
     }
 
-    public AVLTree(Comparator comparator) {
+    public AVLTree(Comparator<E> comparator) {
         super(comparator);
     }
 
