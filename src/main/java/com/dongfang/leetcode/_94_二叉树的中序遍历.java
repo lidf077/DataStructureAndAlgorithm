@@ -36,19 +36,21 @@ public class _94_二叉树的中序遍历 {
     public List<Integer> inorderTraversal(TreeNode root) {
         if (root == null) return Collections.emptyList();
 
-        Stack<TreeNode> stack = new Stack<>();
         List<Integer> res = new ArrayList<>();
-
+        Stack<TreeNode> stack = new Stack<>();
         TreeNode node = root;
-        while (node != null || !stack.isEmpty()) {
-            while (node != null) {
+
+        while (true) {
+            if (node != null) {
                 stack.push(node);
                 node = node.left;
+            } else if (stack.isEmpty()) {
+                break;
+            } else {
+                node = stack.pop();
+                res.add(node.val);
+                node = node.right;
             }
-
-            node = stack.pop();
-            res.add(node.val);
-            node = node.right;
         }
         return res;
     }

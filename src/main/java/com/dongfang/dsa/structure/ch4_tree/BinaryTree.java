@@ -2,6 +2,7 @@ package com.dongfang.dsa.structure.ch4_tree;
 
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 
+import javax.print.attribute.standard.NumberOfInterveningJobs;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -59,7 +60,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
      * @param node
      * @param visitor
      */
-    public void preOrderTraversalByIterator(Node<E> node, Visitor<E> visitor) {
+    private void preOrderTraversalByIterator(Node<E> node, Visitor<E> visitor) {
         Stack<Node<E>> stack = new Stack<>();
         while (true) {
             if (node != null) {
@@ -95,6 +96,44 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         inOrderTraversal(node.left);
         System.out.println(node.element);
         inOrderTraversal(node.right);
+    }
+
+
+
+    public void InOrderTraversalByIterator(Visitor<E> visitor) {
+        if (visitor == null) return;
+        InOrderTraversalByIterator(root, visitor);
+    }
+
+    /**
+     * 如果节点为不为空：
+     *      1、先将节点入栈，
+     *      2、向左走
+     * 如果栈为空：
+     *      遍历结束
+     * 如果节点为空：
+     *      1、遍历到了最左边的叶子
+     *      2、node = 右子树
+     *      3、对node进行循环操作
+     * @param node
+     * @param visitor
+     */
+    private void InOrderTraversalByIterator(Node<E> node, Visitor<E> visitor) {
+        Stack<Node<E>> stack = new Stack<>();
+        while (true) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
+            } else if (stack.isEmpty()) {
+                return;
+            } else {
+                node = stack.pop();
+                // 访问
+                if (visitor.visit(node.element)) return;
+                // 让右节点进行中序遍历，右节点进行这个循环操作
+                node = node.right;
+            }
+        }
     }
 
     public void inOrderTraversal(Visitor<E> visitor) {
