@@ -1,9 +1,8 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
-import java.awt.geom.AffineTransform;
 import java.util.Comparator;
 
-/**
+/*
  * 复杂度分析:
  *      增删改查的次数与树的高度有关，操作次数最坏为树的高度
  *      o(h) = o(logN)
@@ -17,6 +16,7 @@ import java.util.Comparator;
 @SuppressWarnings("all")
 public class BST<E> extends BinaryTree {
     private Comparator<E> comparator;
+
     public BST() {
         this(null);
     }
@@ -37,7 +37,7 @@ public class BST<E> extends BinaryTree {
             return;
         }
 
-        /**
+        /*
          * 添加步骤：
          *      1、找到父节点parent
          *      2、创建新节点node
@@ -76,9 +76,11 @@ public class BST<E> extends BinaryTree {
 
     /**
      * 添加新结点之后的调整
+     *
      * @param node 新添加的节点
      */
-    protected void afterAdd(Node<E> node) {}
+    protected void afterAdd(Node<E> node) {
+    }
 
     private int compare(E e1, E e2) {
         if (comparator != null) {
@@ -96,52 +98,63 @@ public class BST<E> extends BinaryTree {
     private void remove(Node<E> node) {
         if (node == null) return;
 
+        size--;
+
         if (node.hasTwoChildren()) { // 度为2的节点
-            Node<E> successor = successor(node); // 找到此节点的后继节点
-            // 用后继节点的值，覆盖度为2的节点的值
-            node.element = successor.element;
-            // 删除后继节点，让node指向后继节点，后面只删除node节点就行，后面删除node节点的代码可以统一
-            node = successor;
+            // 找到后继节点
+            Node<E> s = successor(node);
+            // 用后继节点的值覆盖度为2的节点的值
+            node.element = s.element;
+            // 删除后继节点
+            node = s;
         }
 
-        // 统一删除node节点，node的度必然是1或者0
+        // 删除node节点（node的度必然是1或者0）
         Node<E> replacement = node.left != null ? node.left : node.right;
-        if (replacement != null) { // 度为1的节点
+
+        if (replacement != null) { // node是度为1的节点
             // 更改parent
             replacement.parent = node.parent;
-            // 更改parent的left right的指向
-            if (node.parent == null) { // node是度为1的节点，并且是根节点
+            // 更改parent的left、right的指向
+            if (node.parent == null) { // node是度为1的节点并且是根节点
                 root = replacement;
             } else if (node == node.parent.left) {
                 node.parent.left = replacement;
-            } else /*if (node == node.parent.right)*/ {
+            } else { // node == node.parent.right
                 node.parent.right = replacement;
             }
+
             // 删除节点之后的处理
-            afterRemove(node, replacement);
-        } else if (node.parent == null) { // node为叶子节点并且是根节点
+            afterRemove(replacement);
+        } else if (node.parent == null) { // node是叶子节点并且是根节点
             root = null;
+
             // 删除节点之后的处理
-            afterRemove(node, null);
+            afterRemove(node);
         } else { // node是叶子节点，但不是根节点
-            if (node == node.parent.left) { // 左叶子
+            if (node == node.parent.left) {
                 node.parent.left = null;
-            } else /*if (node == node.parent.right)*/ { // 右叶子
+            } else { // node == node.parent.right
                 node.parent.right = null;
             }
-            // 删除节点之后的处理
-            afterRemove(node, null);
-        }
 
-        size--;
+            // 删除节点之后的处理
+            afterRemove(node);
+        }
     }
 
 
     /**
      * 删除结点之后的调整
+     *
      * @param node 被删除的节点
      */
-    protected void afterRemove(Node<E> node, Node<E> replacement) {}
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    }
+
+    protected void afterRemove(Node<E> node) {
+    }
+
 
     public boolean contains(E element) {
         return node(element) != null;
