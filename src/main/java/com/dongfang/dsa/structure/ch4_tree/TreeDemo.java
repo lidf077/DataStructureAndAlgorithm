@@ -338,11 +338,17 @@ public class TreeDemo {
     @Test
     public void testRedBlackTree() {
         RBTree<Integer> rbTree = new RBTree<>();
-        int[] data = {89, 85, 75, 99, 10, 55, 3, 92, 35, 91, 68, 12, 60};
-        for (int datum : data) {
-            rbTree.add(datum);
-            BinaryTrees.println(rbTree);
-            System.out.println("------------------------------------");
+//        int[] data = {89, 85, 75, 99, 10, 55, 3, 92, 35, 91, 68, 12, 60};
+//        for (int datum : data) {
+//            rbTree.add(datum);
+//            BinaryTrees.println(rbTree);
+//            System.out.println("------------------------------------");
+//        }
+
+
+        for (int i = 0; i < 100; i++) {
+            System.out.print(i + ",");
+            rbTree.add(i);
         }
 
         BinaryTrees.println(rbTree);

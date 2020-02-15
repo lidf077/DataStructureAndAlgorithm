@@ -50,7 +50,7 @@ public class AVLTree<E> extends BBST<E> {
      * 除父节点以外的其他节点，都不可能失衡
     * */
     @Override
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
         while ((node = node.parent) != null) {
             if (isBalanced(node)) {
                 // 平衡，更新高度，一直找parent的过程中更新高度，性能更高
