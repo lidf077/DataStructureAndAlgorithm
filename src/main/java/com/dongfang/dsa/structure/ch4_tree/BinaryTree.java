@@ -5,6 +5,7 @@ import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Stack;
 
 @SuppressWarnings("all")
 public class BinaryTree<E> implements BinaryTreeInfo {
@@ -40,6 +41,42 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     public void preOrderTraversal(Visitor<E> visitor) {
         if (visitor == null) return;
         preOrderTraversal(root, visitor);
+    }
+
+    public void preOrderTraversalByIterator(Visitor<E> visitor) {
+        if (visitor == null) return;
+        preOrderTraversalByIterator(root, visitor);
+    }
+
+    /**
+     * 迭代前序遍历三步走：
+     * 节点不为空
+     *      1、访问节点
+     *      2、将右子节点入栈
+     *      3、往左走
+     * 节点为空：
+     *      弹出栈顶元素，循环上面的操作
+     * @param node
+     * @param visitor
+     */
+    public void preOrderTraversalByIterator(Node<E> node, Visitor<E> visitor) {
+        Stack<Node<E>> stack = new Stack<>();
+        while (true) {
+            if (node != null) {
+                // 访问node结点
+                if (visitor.visit(node.element)) return;
+
+                // 将右子节点入栈
+                if (node.right != null) stack.push(node.right);
+
+                // 左边不为空就一直向左走
+                node = node.left;
+            } else if (stack.isEmpty()){ // 到过左边的叶子节点，栈为空
+                return; // 栈为空，遍历完了
+            } else {
+                node = stack.pop();
+            }
+        }
     }
 
     private void preOrderTraversal(Node<E> node, Visitor<E> visitor) {
