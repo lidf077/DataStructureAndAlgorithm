@@ -1,5 +1,6 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
+import com.dongfang.dsa.structure.Visitor;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 
 import java.util.Comparator;
@@ -90,13 +91,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     private void elementNotNullCheck(E element) {
         Objects.requireNonNull(element, "element must not be null");
-    }
-
-
-    public abstract class Visitor<E> {
-        boolean isStop;
-
-        abstract boolean visit(E element);
     }
 
 

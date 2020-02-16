@@ -1,5 +1,6 @@
 package com.dongfang.dsa.structure.ch4_tree;
 
+import com.dongfang.dsa.structure.Visitor;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 
 import javax.print.attribute.standard.NumberOfInterveningJobs;
@@ -383,11 +384,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         return /*((Node<E>) node).element*/ node;
     }
 
-    public abstract class Visitor<E> {
-        boolean isStop;
-
-        abstract boolean visit(E element);
-    }
 
     protected static class Node<E> {
         E element;

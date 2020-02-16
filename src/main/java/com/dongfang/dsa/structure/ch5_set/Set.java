@@ -1,5 +1,7 @@
 package com.dongfang.dsa.structure.ch5_set;
 
+import com.dongfang.dsa.structure.Visitor;
+
 /**
  * 集合的特点：
  *      不能存放重复元素
@@ -29,13 +31,5 @@ public interface Set<E> {
 
     void traversal(Visitor<E> visitor);
 
-    /**
-     * 动态数组和链表和索引，可以直接通过for循环遍历
-     * @param <E>
-     */
-    public static abstract class Visitor<E> {
-        boolean top;
 
-        abstract boolean visit(E element);
-    }
 }

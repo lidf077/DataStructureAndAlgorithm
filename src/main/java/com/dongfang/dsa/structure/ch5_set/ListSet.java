@@ -1,5 +1,6 @@
 package com.dongfang.dsa.structure.ch5_set;
 
+import com.dongfang.dsa.structure.Visitor;
 import com.dongfang.dsa.structure.ch1_list.List;
 import com.dongfang.dsa.structure.ch1_list.linked.LinkedList;
 
