@@ -99,7 +99,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
 
-
     public void InOrderTraversalByIterator(Visitor<E> visitor) {
         if (visitor == null) return;
         InOrderTraversalByIterator(root, visitor);
@@ -174,6 +173,33 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         postOrderTraversal(node.left);
         postOrderTraversal(node.right);
         System.out.println(node.element);
+    }
+
+
+
+    public void PostOrderTraversalByIterator(Visitor<E> visitor) {
+        if (visitor == null) return;
+        PostOrderTraversalByIterator(root, visitor);
+    }
+
+    private void PostOrderTraversalByIterator(Node<E> node, Visitor<E> visitor) {
+        Stack<Node<E>> stack = new Stack<>();
+        stack.push(node);
+
+        // 记录上一次弹出访问的节点
+        Node<E> prev = null;
+
+        while (!stack.isEmpty()) {
+            Node<E> top = stack.peek();
+            if (top.isLeaf() || (prev != null && top == prev.parent)) {
+                prev = stack.pop();
+                // 访问节点
+                if (visitor.visit(prev.element)) return;
+            } else {
+                if (top.right != null) stack.push(top.right);
+                if (top.left != null) stack.push(top.left);
+            }
+        }
     }
 
     public void levelOrderTraversal() {
