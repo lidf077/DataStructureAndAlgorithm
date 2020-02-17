@@ -6,6 +6,9 @@ import com.dongfang.dsa.tools.file.FileInfo;
 import com.dongfang.dsa.tools.file.Files;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class MapDemo {
     @Test
     public void testTreeMap() {
@@ -74,5 +77,55 @@ public class MapDemo {
         for (int i = 0; i < words.length; i++) {
             set.remove(words[i]);
         }
+    }
+
+
+    private static class Person {
+        private int age;
+        private float height;
+        private String name;
+
+        public Person(int age, float height, String name) {
+            this.age = age;
+            this.height = height;
+            this.name = name;
+        }
+
+        /**
+         * 用来比较2个对象是否相等
+         */
+        @Override
+        public boolean equals(Object obj) {
+            // 内存地址
+            if (this == obj) return true;
+            if (obj == null || obj.getClass() != getClass()) return false;
+            // if (obj == null || !(obj instanceof Person)) return false;
+
+            // 比较成员变量
+            Person person = (Person) obj;
+            return person.age == age
+                    && person.height == height
+                    && (Objects.equals(person.name, name));
+        }
+
+        @Override
+        public int hashCode() {
+            int hashCode = Integer.hashCode(age);
+            hashCode = hashCode * 31 + Float.hashCode(height);
+            hashCode = hashCode * 31 + (name != null ? name.hashCode() : 0);
+            return hashCode;
+        }
+    }
+
+    @Test
+    public void testHashAndEquals() {
+        java.util.Map<Person, String> map = new HashMap<>();
+        Person p1 = new Person(21, 178.6f, "jack");
+        map.put(p1, p1.name);
+        Person p2 = new Person(21, 178.6f, "jack");
+        map.put(p2, p2.name);
+        Person p3 = new Person(21, 178.6f, "jack");
+        map.put(p3, p3.name);
+        System.out.println("map.size() = " + map.size());
     }
 }
