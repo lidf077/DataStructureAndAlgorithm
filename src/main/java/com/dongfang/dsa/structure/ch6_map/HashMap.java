@@ -3,6 +3,7 @@ package com.dongfang.dsa.structure.ch6_map;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTrees;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -34,9 +35,7 @@ public class HashMap<K, V> implements Map<K, V> {
     public void clear() {
         if (size == 0) return;
         size = 0;
-        for (int i = 0; i < table.length; i++) {
-            table[i] = null;
-        }
+        Arrays.fill(table, null);
     }
 
     @Override
@@ -614,6 +613,7 @@ public class HashMap<K, V> implements Map<K, V> {
     }
 
     protected static class Node<K, V> {
+        // 在插入删除时要多次用到这个hash值，因此存储起来，new节点的时候就计算
         int hash;
         K key;
         V value;

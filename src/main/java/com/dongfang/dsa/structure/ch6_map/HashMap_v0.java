@@ -3,6 +3,7 @@ package com.dongfang.dsa.structure.ch6_map;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTreeInfo;
 import com.dongfang.dsa.structure.ch4_tree.printer.BinaryTrees;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -33,9 +34,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
     public void clear() {
         if (size == 0) return;
         size = 0;
-        for (int i = 0; i < table.length; i++) {
-            table[i] = null;
-        }
+		Arrays.fill(table, null);
     }
 
     @Override
@@ -340,29 +339,45 @@ public class HashMap_v0<K, V> implements Map<K, V> {
      * @param h2 k2的hashCode
      * @return
      */
-//	private int compare(K k1, K k2, int h1, int h2) {
-//		// 比较哈希值
-//		int result = h1 - h2;
-//		if (result != 0) return result;
-//		
-//		// 比较equals
-//		if (Objects.equals(k1, k2)) return 0;
-//		
-//		// 哈希值相等，但是不equals
-//		if (k1 != null && k2 != null 
-//				&& k1.getClass() == k2.getClass()
-//				&& k1 instanceof Comparable) {
-//			// 同一种类型并且具备可比较性
-//			if (k1 instanceof Comparable) {
-//				return ((Comparable) k1).compareTo(k2);
-//			}
-//		}
-//		
-//		// 同一种类型，哈希值相等，但是不equals，但是不具备可比较性
-//		// k1不为null，k2为null
-//		// k1为null，k2不为null
-//		return System.identityHashCode(k1) - System.identityHashCode(k2);
-//	}
+	private int compare(K k1, K k2, int h1, int h2) {
+		// 比较哈希值
+		int result = h1 - h2;
+		// 比较出结果了，直接返回，结果不相等，不冲突
+		if (result != 0) return result;
+
+		// 比较equals，证明两个key是同一个key，直接返回，两个key是同一个对象
+		if (Objects.equals(k1, k2)) return 0;
+
+		// 哈希值相等，但是不equals，哈希冲突了
+        // 比较类名
+		if (k1 != null
+                && k2 != null
+				&& k1.getClass() == k2.getClass()
+				&& k1 instanceof Comparable) {
+			// 同一种类型并且具备可比较性
+            return ((Comparable) k1).compareTo(k2);
+        }
+
+		if (k1 != null && k2 != null) {
+            String k1Cls = k1.getClass().getName();
+            String k2Cls = k2.getClass().getName();
+            // 比较类名的字符串
+            result = k1Cls.compareTo(k2Cls);
+            if (result != 0) return result;
+
+            // 同一种类型且具备可比较性
+            if (k1 instanceof Comparable) {
+                return ((Comparable) k1).compareTo(k2);
+            }
+        }
+
+		// 同一种类型，哈希值相等，但是不equals，但是不具备可比较性
+        // null的内存地址为0，不同的对象，内存地址想减肯定有结果
+        // identityHashCode 但用内存地址算出来的内存地址
+		// k1不为null，k2为null
+		// k1为null，k2不为null
+		return System.identityHashCode(k1) - System.identityHashCode(k2);
+	}
     private void afterRemove(Node<K, V> node) {
         // 如果删除的节点是红色
         // 或者 用以取代删除节点的子节点是红色
