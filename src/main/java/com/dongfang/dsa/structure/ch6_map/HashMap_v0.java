@@ -34,7 +34,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
     public void clear() {
         if (size == 0) return;
         size = 0;
-		Arrays.fill(table, null);
+        Arrays.fill(table, null);
     }
 
     @Override
@@ -279,7 +279,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
     }
 
     private Node<K, V> node(K key) {
-	// 先找到key所在的桶，然后在红黑树中找
+        // 先找到key所在的桶，然后在红黑树中找
         Node<K, V> root = table[index(key)];
         return root == null ? null : node(root, key);
     }
@@ -341,26 +341,26 @@ public class HashMap_v0<K, V> implements Map<K, V> {
      * @param h2 k2的hashCode
      * @return
      */
-	private int compare(K k1, K k2, int h1, int h2) {
-		// 比较哈希值
-		int result = h1 - h2;
-		// 比较出结果了，直接返回，结果不相等，不冲突
-		if (result != 0) return result;
+    private int compare(K k1, K k2, int h1, int h2) {
+        // 比较哈希值
+        int result = h1 - h2;
+        // 比较出结果了，直接返回，结果不相等，不冲突
+        if (result != 0) return result;
 
-		// 比较equals，证明两个key是同一个key，直接返回，两个key是同一个对象
-		if (Objects.equals(k1, k2)) return 0;
+        // 比较equals，证明两个key是同一个key，直接返回，两个key是同一个对象
+        if (Objects.equals(k1, k2)) return 0;
 
-		// 哈希值相等，但是不equals，哈希冲突了
+        // 哈希值相等，但是不equals，哈希冲突了
         // 比较类名
-		if (k1 != null
+        if (k1 != null
                 && k2 != null
-				&& k1.getClass() == k2.getClass()
-				&& k1 instanceof Comparable) {
-			// 同一种类型并且具备可比较性
+                && k1.getClass() == k2.getClass()
+                && k1 instanceof Comparable) {
+            // 同一种类型并且具备可比较性
             return ((Comparable) k1).compareTo(k2);
         }
 
-		if (k1 != null && k2 != null) {
+        if (k1 != null && k2 != null) {
             String k1Cls = k1.getClass().getName();
             String k2Cls = k2.getClass().getName();
             // 比较类名的字符串
@@ -373,14 +373,15 @@ public class HashMap_v0<K, V> implements Map<K, V> {
             }
         }
 
-		// 同一种类型，哈希值相等，但是不equals，但是不具备可比较性
+        // 同一种类型，哈希值相等，但是不equals，但是不具备可比较性
         // null的内存地址为0，不同的对象，内存地址想减肯定有结果
         // identityHashCode 但用内存地址算出来的内存地址
-		// k1不为null，k2为null
-		// k1为null，k2不为null
-		// 把有的可行的，可用的比较方法都用完了，再没得比的时候，再用内存地址来比
-		return System.identityHashCode(k1) - System.identityHashCode(k2);
-	}
+        // k1不为null，k2为null
+        // k1为null，k2不为null
+        // 把有的可行的，可用的比较方法都用完了，再没得比的时候，再用内存地址来比
+        return System.identityHashCode(k1) - System.identityHashCode(k2);
+    }
+
     private void afterRemove(Node<K, V> node) {
         // 如果删除的节点是红色
         // 或者 用以取代删除节点的子节点是红色
