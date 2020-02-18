@@ -59,6 +59,7 @@ public class HeapDemo {
             if (heap.size() < k) { // 前k个数添加到小顶堆
                 heap.add(datum); // logk
             } else if (datum > heap.get()) { // 如果是第k + 1个数，并且大于堆顶元素
+                // 将最小的剔除，换成一个更大的，堆顶的是最小的
                 heap.replace(datum); // logk
             }
         }

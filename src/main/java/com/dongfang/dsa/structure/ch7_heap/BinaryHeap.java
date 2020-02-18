@@ -115,6 +115,10 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      */
     @Override
     public E replace(E element) {
+/*        E root = remove();
+        add(element);
+        return root;*/
+
         elementNotNullCheck(element);
 
         E root = null;

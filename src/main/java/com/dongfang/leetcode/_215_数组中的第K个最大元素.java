@@ -18,12 +18,21 @@ package com.dongfang.leetcode;//在未排序的数组中找到第 k 个最大的
 
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 //leetcode submit region begin(Prohibit modification and deletion)
 public class _215_数组中的第K个最大元素 {
     public int findKthLargest(int[] nums, int k) {
-        Arrays.sort(nums);
-        return nums[k - 1];
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> (o2 - o1));
+        for (int num : nums) {
+            if (queue.size() < k) {
+                queue.offer(num);
+            } else if (num > queue.peek()) {
+                queue.poll();
+                queue.offer(num);
+            }
+        }
+        return queue.poll();
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
