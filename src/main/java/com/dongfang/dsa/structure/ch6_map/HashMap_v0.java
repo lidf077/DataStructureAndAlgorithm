@@ -279,6 +279,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
     }
 
     private Node<K, V> node(K key) {
+	// 先找到key所在的桶，然后在红黑树中找
         Node<K, V> root = table[index(key)];
         return root == null ? null : node(root, key);
     }
