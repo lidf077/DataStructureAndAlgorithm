@@ -326,6 +326,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
         return (hash ^ (hash >>> 16)) & (table.length - 1);
     }
 
+    // 节点的hash就是key的hash，已经存在，不用重复计算
     private int index(Node<K, V> node) {
         return (node.hash ^ (node.hash >>> 16)) & (table.length - 1);
     }
@@ -524,7 +525,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
             grand.parent.left = parent;
         } else if (grand.isRightChild()) {
             grand.parent.right = parent;
-        } else { // grand是root节点
+        } else { // grand是root节点，替换gran或者parent所在talbe中的红黑树根节点
             table[index(grand)] = parent;
         }
 
