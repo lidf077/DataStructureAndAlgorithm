@@ -7,12 +7,16 @@ public class HeapDemo {
     @Test
     public void testHeapAdd() {
         BinaryHeap<Integer> heap = new BinaryHeap<>();
-        int[] data = {10, 38, 43, 50, 65, 68, 72};
+        int[] data = {10, 38, 43, 50, 65, 68, 72, 90};
         for (int datum : data) {
             heap.add(datum);
         }
         BinaryTrees.println(heap);
-        heap.add(90);
+        heap.remove();
         BinaryTrees.println(heap);
+        heap.replace(2);
+        BinaryTrees.println(heap);
+
+
     }
 }

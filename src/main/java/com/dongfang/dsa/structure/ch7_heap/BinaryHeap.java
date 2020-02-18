@@ -66,14 +66,89 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         return elements[0];
     }
 
+    /*
+     * 删除堆顶元素
+     *      1、用最后一个节点覆盖根节点
+     *      2、删除最后一个节点
+     *      3、循环执行以下操作
+     *          1、如果node < 子节点，与最大的子节点交换位置
+     *          2、如果node >= 子节点，或者node没有子节点，退出循环
+     *      这个过程叫做下滤，sift down，时间复杂度O(logn)
+     *      交换位置的操作可以像添加一样优化
+     * @return
+     */
     @Override
     public E remove() {
-        return null;
+        emptyCheck();
+        E root = elements[0];
+        int lastIndex = --size;
+        elements[0] = elements[lastIndex];
+        elements[lastIndex] = null;
+
+        siftDown(0);
+        return root;
     }
 
+    /**
+     * 删除堆顶元素的同时插入一个新元素
+     *
+     * @param element 插入的新元素
+     * @return 返回原来的堆项
+     */
     @Override
     public E replace(E element) {
-        return null;
+/* 2logn
+       E root = remove();
+        add(element);
+        return root;*/
+
+        // 将新添加的元素替换掉堆顶，再sift down
+        elementNotNullCheck(element);
+        E root = null;
+        if (size == 0) {
+            elements[0] = element;
+            size++;
+        } else {
+            root = elements[0];
+            elements[0] = element;
+            siftDown(0);
+        }
+        return root;
+    }
+
+
+    private void siftDown(int index) {
+        E element = elements[index];
+        int half = size >> 1;
+        // 第一个叶子节点的索引 == 非叶子节点的数量 floor(n/2)
+        // index < 第一个叶子节点的索引
+        // 必须保证index位置是非叶子节点
+        while (index < half) {
+            // index的节点有2种情况
+            // 1.只有左子节点
+            // 2.同时有左右子节点
+
+            // 默认为左子节点跟它进行比较
+            int childIndex = (index << 1) + 1;
+            E child = elements[childIndex];
+
+            // 右子节点
+            int rightIndex = childIndex + 1;
+
+            // 选出左右子节点中最大的值，不超出数组边界并且右边大
+            if (rightIndex < size && compare(elements[rightIndex], child) > 0) {
+                childIndex = rightIndex;
+                child = elements[rightIndex];
+            }
+
+            if (compare(element, child) >= 0) break;
+
+            // 将子节点存放在index位置
+            elements[index] = child;
+            // 重新设置index
+            index = childIndex;
+        }
+        elements[index] = element;
     }
 
     /**
