@@ -22,16 +22,34 @@ import java.util.Comparator;
 @SuppressWarnings("all")
 public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     private E[] elements;
-
     private static final int DEFAULT_CAPACITY = 10;
 
-    public BinaryHeap(Comparator<E> comparator) {
+    public BinaryHeap(E[] elements, Comparator<E> comparator) {
         super(comparator);
-        this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+
+        if (elements == null || elements.length == 0) {
+            this.elements = (E[]) new Object[DEFAULT_CAPACITY];
+        } else {
+            size = elements.length;
+            int capacity = Math.max(elements.length, DEFAULT_CAPACITY);
+            this.elements = (E[]) new Object[capacity];
+            for (int i = 0; i < elements.length; i++) {
+                this.elements[i] = elements[i];
+            }
+            heapify();
+        }
+    }
+
+    public BinaryHeap(E[] elements) {
+        this(elements, null);
+    }
+
+    public BinaryHeap(Comparator<E> comparator) {
+        this(null, comparator);
     }
 
     public BinaryHeap() {
-        this(null);
+        this(null, null);
     }
 
     @Override
@@ -43,21 +61,25 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     }
 
     /*
-     * 循环指行以下操作
-     *          1、如果node > 父节点，与父节点交换位置
-     *          2、如果node <= 父节点，或者没有父节点，退出循环
-     *          这个过程叫做上滤 sift up
-     *          时间复杂度 O(logn)
+     * 完全二叉堆
+     *      二叉堆的逻辑结构就是一棵完全二叉树，所以也叫完全二叉堆
+     *      有完全二叉树的性质，二叉堆的底层物理结构一般使用数组实现即可
      *
-     * @param element
+     *      索引i的规律，n是元素数量
+     *          1、如果i = 0，它是根节点
+     *          2、如果 i > 0 ，它的父节点索引为floor((i - 1) / 2)
+     *          3、如果 2i + 1 <= n - 1 它的左子节点索引为 2i + 1
+     *          4、如果 2i + 1 > n - 1，它无左子节点
+     *          5、如果 2i + 2 <= n - 1，它的右子节点索引为2i + 2
+     *          6、如果 2i + 2 > n - 1，它无右子节点
+     * @param <E>
      */
     @Override
     public void add(E element) {
         elementNotNullCheck(element);
         ensureCapacity(size + 1);
-        elements[size] = element;
-        size++;
-        siftUp(size - 1); // 让最后一个位置的元素上滤
+        elements[size++] = element;
+        siftUp(size - 1);
     }
 
     @Override
@@ -80,8 +102,9 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     @Override
     public E remove() {
         emptyCheck();
-        E root = elements[0];
+
         int lastIndex = --size;
+        E root = elements[0];
         elements[0] = elements[lastIndex];
         elements[lastIndex] = null;
 
@@ -97,13 +120,8 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      */
     @Override
     public E replace(E element) {
-/* 2logn
-       E root = remove();
-        add(element);
-        return root;*/
-
-        // 将新添加的元素替换掉堆顶，再sift down
         elementNotNullCheck(element);
+
         E root = null;
         if (size == 0) {
             elements[0] = element;
@@ -116,11 +134,30 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         return root;
     }
 
+    /**
+     * 批量建堆
+     */
+    private void heapify() {
+        // 自上而下的上滤
+//		for (int i = 1; i < size; i++) {
+//			siftUp(i);
+//		}
 
+        // 自下而上的下滤
+        for (int i = (size >> 1) - 1; i >= 0; i--) {
+            siftDown(i);
+        }
+    }
+
+    /**
+     * 让index位置的元素下滤
+     *
+     * @param index
+     */
     private void siftDown(int index) {
         E element = elements[index];
         int half = size >> 1;
-        // 第一个叶子节点的索引 == 非叶子节点的数量 floor(n/2)
+        // 第一个叶子节点的索引 == 非叶子节点的数量
         // index < 第一个叶子节点的索引
         // 必须保证index位置是非叶子节点
         while (index < half) {
@@ -135,15 +172,14 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
             // 右子节点
             int rightIndex = childIndex + 1;
 
-            // 选出左右子节点中最大的值，不超出数组边界并且右边大
+            // 选出左右子节点最大的那个
             if (rightIndex < size && compare(elements[rightIndex], child) > 0) {
-                childIndex = rightIndex;
-                child = elements[rightIndex];
+                child = elements[childIndex = rightIndex];
             }
 
             if (compare(element, child) >= 0) break;
 
-            // 将子节点存放在index位置
+            // 将子节点存放到index位置
             elements[index] = child;
             // 重新设置index
             index = childIndex;
@@ -157,39 +193,33 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      * @param index
      */
     private void siftUp(int index) {
-/*        E element = elements[index];
-        while (index > 0) {
-            int parentIndex = (index - 1) >> 2; // 向下取整
-            E parent = elements[parentIndex];
-            if (compare(element, parent) <= 0) return;
-            // element 大于parent节点，交换
-            swap(index, parentIndex);
-            // index指向父节点
-            index = parentIndex;
-        }*/
-
-        // 将新添加的节点备份，确定了最终位置才摆放上去
-        // 时间复杂度从 3logn -->logn + 1
+//		E e = elements[index];
+//		while (index > 0) {
+//			int pindex = (index - 1) >> 1;
+//			E p = elements[pindex];
+//			if (compare(e, p) <= 0) return;
+//
+//			// 交换index、pindex位置的内容
+//			E tmp = elements[index];
+//			elements[index] = elements[pindex];
+//			elements[pindex] = tmp;
+//
+//			// 重新赋值index
+//			index = pindex;
+//		}
         E element = elements[index];
         while (index > 0) {
-            int parentIndex = (index - 1) >> 2; // 向下取整
+            int parentIndex = (index - 1) >> 1;
             E parent = elements[parentIndex];
             if (compare(element, parent) <= 0) break;
 
             // 将父元素存储在index位置
             elements[index] = parent;
 
+            // 重新赋值index
             index = parentIndex;
         }
-
-        // index就是要放的位置
         elements[index] = element;
-    }
-
-    private void swap(int i, int j) {
-        E temp = elements[i];
-        elements[i] = elements[j];
-        elements[j] = temp;
     }
 
     private void ensureCapacity(int capacity) {
@@ -213,10 +243,9 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
 
     private void elementNotNullCheck(E element) {
         if (element == null) {
-            throw new IllegalArgumentException("Element must not be null");
+            throw new IllegalArgumentException("element must not be null");
         }
     }
-
 
     @Override
     public Object root() {
