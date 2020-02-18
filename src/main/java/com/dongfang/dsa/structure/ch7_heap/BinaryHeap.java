@@ -20,30 +20,18 @@ import java.util.Comparator;
  */
 
 @SuppressWarnings("all")
-public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
+public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
     private E[] elements;
-    private int size;
-    private Comparator<E> comparator;
+
     private static final int DEFAULT_CAPACITY = 10;
 
     public BinaryHeap(Comparator<E> comparator) {
-        this.comparator = comparator;
+        super(comparator);
         this.elements = (E[]) new Object[DEFAULT_CAPACITY];
     }
 
     public BinaryHeap() {
         this(null);
-    }
-
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     @Override
@@ -54,12 +42,12 @@ public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
         size = 0;
     }
 
-    /**
+    /*
      * 循环指行以下操作
-     * 1、如果node > 父节点，与父节点交换位置
-     * 2、如果node <= 父节点，或者没有父节点，退出循环
-     * 这个过程叫做上滤 sift up
-     * 时间复杂度 O(logn)
+     *          1、如果node > 父节点，与父节点交换位置
+     *          2、如果node <= 父节点，或者没有父节点，退出循环
+     *          这个过程叫做上滤 sift up
+     *          时间复杂度 O(logn)
      *
      * @param element
      */
@@ -152,11 +140,6 @@ public class BinaryHeap<E> implements Heap<E>, BinaryTreeInfo {
         if (element == null) {
             throw new IllegalArgumentException("Element must not be null");
         }
-    }
-
-
-    private int compare(E e1, E e2) {
-        return comparator != null ? comparator.compare(e1, e2) : ((Comparable<E>) e1).compareTo(e2);
     }
 
 
