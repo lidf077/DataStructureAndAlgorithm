@@ -376,6 +376,7 @@ public class HashMap_v0<K, V> implements Map<K, V> {
         // identityHashCode 但用内存地址算出来的内存地址
 		// k1不为null，k2为null
 		// k1为null，k2不为null
+		// 把有的可行的，可用的比较方法都用完了，再没得比的时候，再用内存地址来比
 		return System.identityHashCode(k1) - System.identityHashCode(k2);
 	}
     private void afterRemove(Node<K, V> node) {
