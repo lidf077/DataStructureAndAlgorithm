@@ -60,19 +60,14 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         size = 0;
     }
 
-    /*
-     * 完全二叉堆
-     *      二叉堆的逻辑结构就是一棵完全二叉树，所以也叫完全二叉堆
-     *      有完全二叉树的性质，二叉堆的底层物理结构一般使用数组实现即可
+    /**
+     * 循环指行以下操作
+     * 1、如果node > 父节点，与父节点交换位置
+     * 2、如果node <= 父节点，或者没有父节点，退出循环
+     * 这个过程叫做上滤 sift up
+     * 时间复杂度 O(logn)
      *
-     *      索引i的规律，n是元素数量
-     *          1、如果i = 0，它是根节点
-     *          2、如果 i > 0 ，它的父节点索引为floor((i - 1) / 2)
-     *          3、如果 2i + 1 <= n - 1 它的左子节点索引为 2i + 1
-     *          4、如果 2i + 1 > n - 1，它无左子节点
-     *          5、如果 2i + 2 <= n - 1，它的右子节点索引为2i + 2
-     *          6、如果 2i + 2 > n - 1，它无右子节点
-     * @param <E>
+     * @param element
      */
     @Override
     public void add(E element) {
@@ -88,7 +83,7 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
         return elements[0];
     }
 
-    /*
+    /**
      * 删除堆顶元素
      *      1、用最后一个节点覆盖根节点
      *      2、删除最后一个节点
@@ -139,11 +134,15 @@ public class BinaryHeap<E> extends AbstractHeap<E> implements BinaryTreeInfo {
      */
     private void heapify() {
         // 自上而下的上滤
+        // 上滤就等价于不断添加
+        // nlogn
 //		for (int i = 1; i < size; i++) {
 //			siftUp(i);
 //		}
 
         // 自下而上的下滤
+        // 左右先建堆，再合并
+        // n
         for (int i = (size >> 1) - 1; i >= 0; i--) {
             siftDown(i);
         }
