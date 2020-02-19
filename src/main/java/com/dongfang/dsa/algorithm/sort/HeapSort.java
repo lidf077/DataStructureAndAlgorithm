@@ -4,15 +4,18 @@ import java.util.Arrays;
 
 /**
  * 堆排序可以认为是对选择排序的一种优化，用堆来优化寻找最值的时间复杂度
+ *      是不稳定的排序
+ *          时间 NlogN
+ *          空间 1
  *      执行流程：
  *          1、对序列进行原地建堆 heapify
  *          2、重复执行以下操作，直到堆的元素数量为1
  *              2-1、交换堆顶元素与尾元素
  *              2-2、堆的元素数量减1
  *              2-3、对0位置进行1次siftDown操作
- * @param <T>
+ * @param <E>
  */
-public class HeapSort<T extends Comparable> extends Sort<T> {
+public class HeapSort<E extends Comparable<E>> extends Sort<E> {
     private int heapSize;
 
     @Override
@@ -25,7 +28,6 @@ public class HeapSort<T extends Comparable> extends Sort<T> {
         heapSize = array.length;
         // 原地建堆
         heapify();
-        System.out.println("Arrays.toString(array) = " + Arrays.toString(array));
         while (heapSize > 1) {
             // 交换堆顶元素和尾部元素
             swap(0, heapSize - 1);
@@ -59,7 +61,7 @@ public class HeapSort<T extends Comparable> extends Sort<T> {
      * @param index
      */
     private void siftDown(int index) {
-        T element = array[index];
+        E element = array[index];
         int half = heapSize >> 1;
         // 第一个叶子节点的索引 == 非叶子节点的数量
         // index < 第一个叶子节点的索引
@@ -71,7 +73,7 @@ public class HeapSort<T extends Comparable> extends Sort<T> {
 
             // 默认为左子节点跟它进行比较
             int childIndex = (index << 1) + 1;
-            T child = array[childIndex];
+            E child = array[childIndex];
 
             // 右子节点
             int rightIndex = childIndex + 1;

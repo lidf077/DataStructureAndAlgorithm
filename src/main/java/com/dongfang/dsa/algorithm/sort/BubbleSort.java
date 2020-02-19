@@ -1,7 +1,7 @@
 package com.dongfang.dsa.algorithm.sort;
 
 // 比较大的值一直往后边冒
-public class BubbleSort<T extends Comparable> extends Sort<T> {
+public class BubbleSort<E extends Comparable<E>> extends Sort<E> {
     @Override
     protected void sort() {
         optimizedBubbleSortIndex();
