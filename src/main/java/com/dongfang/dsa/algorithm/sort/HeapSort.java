@@ -1,6 +1,5 @@
 package com.dongfang.dsa.algorithm.sort;
 
-import java.util.Arrays;
 
 /**
  * 堆排序可以认为是对选择排序的一种优化，用堆来优化寻找最值的时间复杂度

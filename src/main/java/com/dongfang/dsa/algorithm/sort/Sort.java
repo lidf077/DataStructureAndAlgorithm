@@ -36,4 +36,9 @@ public abstract class Sort<E extends Comparable<E>> {
         swapCount++;
     }
 
+
+    private boolean isStable() {
+        return true;
+    }
+
 }
