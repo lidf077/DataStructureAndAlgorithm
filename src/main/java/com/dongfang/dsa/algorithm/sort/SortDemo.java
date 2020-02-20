@@ -46,4 +46,11 @@ public class SortDemo {
         System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
 
     }
+
+    @Test
+    public void testQuickSort() {
+        QuickSort<Integer> quickSort = new QuickSort<>();
+        quickSort.sort(data);
+        System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
+    }
 }
