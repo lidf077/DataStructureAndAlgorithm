@@ -14,7 +14,7 @@ public class SortDemo {
                     83, 27, 39, 55, 61, 23, 86, 76, 62,
                     60, 88, 48, 96, 4, 20, 42, 10, 41,
                     50, 81, 6, 5, 13, 57, 47, 67, 75, 59,
-                    77, 64, 68, 71, 25, 38, 2, 80, 1, 12, 93, -4};
+                    77, 64, 68, 71, 25, 38, 2, 80, 1, 12, 93, 61};
 
     @Test
     public void testBubbleSort() {
@@ -59,5 +59,13 @@ public class SortDemo {
         CountingSort countingSort = new CountingSort();
         countingSort.sort(data);
         System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
+    }
+
+    @Test
+    public void testRadixSort() {
+        RadixSort radixSort = new RadixSort();
+        radixSort.sort(data);
+        System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
+        System.out.println("(Long.MIN_VALUE + \"\").length() = " + (Long.MIN_VALUE + "").length());
     }
 }
