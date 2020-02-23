@@ -68,4 +68,11 @@ public class SortDemo {
         System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
         System.out.println("(Long.MIN_VALUE + \"\").length() = " + (Long.MIN_VALUE + "").length());
     }
+
+    @Test
+    public void testBucketSort() {
+        BucketSort bucketSort = new BucketSort();
+        bucketSort.sort(data);
+        System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
+    }
 }
