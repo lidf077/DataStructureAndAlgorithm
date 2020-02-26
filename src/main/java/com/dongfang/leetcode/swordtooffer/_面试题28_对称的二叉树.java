@@ -1,4 +1,6 @@
-package com.dongfang.leetcode;
+package com.dongfang.leetcode.swordtooffer;
+
+import com.dongfang.leetcode.TreeNode;
 
 import java.util.LinkedList;
 import java.util.Queue;

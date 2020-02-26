@@ -3,7 +3,8 @@ package com.dongfang.dsa.algorithm.graph;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ListGraph implements Graph {
+public class ListGraph<V, W> implements Graph<V, W> {
+
 
     @Override
     public int edgeSize() {
@@ -16,32 +17,29 @@ public class ListGraph implements Graph {
     }
 
     @Override
-    public void addVertex(Object o) {
+    public void addVertex(V v) {
 
     }
 
     @Override
-    public void removeVertex(Object o) {
+    public void removeVertex(V v) {
 
     }
 
     @Override
-    public void addEdge(Object from, Object to, Object weight) {
+    public void addEdge(V from, V to, W weight) {
 
     }
 
     @Override
-    public void addEdge(Object from, Object to) {
+    public void addEdge(V from, V to) {
 
     }
 
     @Override
-    public void removeEdge(Object from, Object to) {
+    public void removeEdge(V from, V to) {
 
     }
-
-
-
 
     private static class Vertex<V, W> {
         V value;
