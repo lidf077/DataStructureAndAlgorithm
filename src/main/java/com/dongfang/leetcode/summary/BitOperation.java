@@ -2,6 +2,9 @@ package com.dongfang.leetcode.summary;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class BitOperation {
     public int singleNumber(int[] nums) {
         int res = 0;
@@ -137,5 +140,109 @@ public class BitOperation {
             count += ((A >> i) & 1) == ((B >> i) & 1) ? 0 : 1;
         }
         return count;
+    }
+
+    /**
+     * 题1:找出唯一成对的数
+     * 1-1000这1000个数放在含有1001个元素的数组中，只有唯一的一个元素值重复，
+     * 其它均只出现一次。每个数组元素只能访问一次，设计一个算法，
+     * 将它找出来;不用辅助存储空间，能否设计一个算法实现?
+     */
+    @Test
+    public void testPairNumbers() {
+        int N = 1100;
+        int[] arr = new int[N];
+        for (int i = 0; i < arr.length - 1; i++) {
+            arr[i] = i + 1;
+        }
+        arr[N - 1] = new Random().nextInt(N - 1) + 1;
+        int index = new Random().nextInt(N);
+        int t;
+        t = arr[N - 1];
+        arr[N - 1] = arr[index];
+        arr[index] = t;
+        System.out.println(Arrays.toString(arr));
+        int x = 0;
+        for (int i = 0; i < N - 1; i++) {
+            x = x ^ (i + 1);
+        }
+        for (int i = 0; i < N; i++) {
+            x ^= arr[i];
+        }
+//		x^x=0,出现两次的消去，剩下出现三次的
+        System.out.println(x);
+//        辅助空间方法
+        int[] h = new int[N];
+        for (int i = 0; i < N; i++) {
+            h[arr[i]]++;
+        }
+        for (int i = 0; i < N; i++) {
+            if (h[i] == 2) {
+                System.out.println(i);
+            }
+        }
+    }
+
+    /**
+     * 题5:将整数的二进制奇偶位互换
+     * 1&保留，0&置零，0^保留
+     */
+    @Test
+    public void testSwapOddAndEven() {
+        int a = 6;
+        //结果为9
+
+        int ou = a & 0xaaaaaaaa;//和1010 1010 ...做与运算得到偶位
+        int ji = a & 0x55555555;//和0101 0101 ...做与运算得到奇位
+        int res = (ou >> 1) ^ (ji << 1);
+
+        System.out.println("res = " + res);
+    }
+
+    /**
+     * 题7:出现k次与出现1次
+     * 数组中只有-一个数出现了1次，其他的数都出现了k次，请输出只出现了1次的数。
+     * 2 个相同的2 进制数做不进位加法，结果为0
+     * 10个相同的10进制数做不进位加法，结果为0
+     * k 个相同的k 进制数做不进位加法，结果为0
+     */
+    @Test
+    public void testNRadix() {
+        int[] arr = {2, 2, 2, 9, 7, 7, 7, 3, 3, 3, 6, 6, 6, 0, 0, 0};
+        int len = arr.length;
+        char[][] kRadix = new char[len][];
+        int k = 3;
+
+        int maxLen = 0;
+        //转成k进制字符数组
+        //对于每个数字
+        for (int i = 0; i < len; i++) {
+            //求每个数字的三进制字符串并翻转，然后转为字符数组
+            kRadix[i] = new StringBuilder(Integer.toString(arr[i], k)).reverse().toString().toCharArray();
+            if (kRadix[i].length > maxLen)
+                maxLen = kRadix[i].length;
+        }
+        //不进位加法
+        int[] resArr = new int[maxLen];
+        for (int i = 0; i < len; i++) {
+            //  不进位加法
+            for (int j = 0; j < maxLen; j++) {
+                if (j >= kRadix[i].length)
+                    resArr[j] += 0;
+                else
+                    resArr[j] += (kRadix[i][j] - '0');
+            }
+        }
+        int res = 0;
+        for (int i = 0; i < maxLen; i++) {
+            res += (resArr[i] % k) * (int) (Math.pow(k, i));// 8%3=2,
+        }
+        System.out.println(res);
+    }
+
+    @Test
+    public void testRadix() {
+        String res = Integer.toString(77, 3);
+        System.out.println("res = " + res);
     }
 }
