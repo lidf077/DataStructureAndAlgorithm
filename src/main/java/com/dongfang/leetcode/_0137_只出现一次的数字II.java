@@ -21,7 +21,17 @@ package com.dongfang.leetcode;//给定一个非空整数数组，除了某个元
 public class _0137_只出现一次的数字II {
     // 先想最简单的做法
     public int singleNumber(int[] nums) {
-        return -1;
+
+        int res = 0;
+        // 将num中所有数的每一位加起来，对3求余，余数就是剩下的一个数的二进制位，然后对结果一直左移
+        for (int i = 0; i < 32; i++) {
+            int sum = 0;
+            for (int num : nums) {
+                sum = sum + ((num >> i) & 1);
+            }
+            res = res | ((sum % 3) << i);
+        }
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
