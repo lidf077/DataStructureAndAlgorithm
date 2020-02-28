@@ -13,6 +13,16 @@ public class ListGraph<V, W> implements Graph<V, W> {
     private Map<V, Vertex<V, W>> vertices = new HashMap<>();
     private Set<Edge<V, W>> edges = new HashSet<>();
 
+    public void print() {
+        vertices.forEach((v, vertex) -> {
+            System.out.println(v);
+            System.out.println("vertex.outEdges = " + vertex.outEdges);
+            System.out.println("vertex.inEdges = " + vertex.inEdges);
+        });
+
+        edges.forEach(System.out::println);
+    }
+
     @Override
     public int edgeSize() {
         return edges.size();
@@ -104,6 +114,12 @@ public class ListGraph<V, W> implements Graph<V, W> {
             // equals通过value比较
             return value == null ? 0 : value.hashCode();
         }
+
+        @Override
+        public String toString() {
+            return value == null ? "null" : value.toString();
+//            return "Vertex [value = " + valStr + ", inEdges = " + inEdges + ", outEdges = " + outEdges + "]";
+        }
     }
 
     private static class Edge<V, W> {
@@ -130,6 +146,11 @@ public class ListGraph<V, W> implements Graph<V, W> {
             int fromHashCode = from.hashCode();
             int toHashCode = to.hashCode();
             return fromHashCode * 31 + toHashCode;
+        }
+
+        @Override
+        public String toString() {
+            return "Edge [from = " + from + ", to = " + to + ", weight = " + weight + "]";
         }
     }
 }
