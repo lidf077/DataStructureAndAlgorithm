@@ -26,4 +26,52 @@ public class UnionFindDemo {
 
         System.out.println("quickFind.find(7) = " + quickFind.find(7));
     }
+
+    @Test
+    public void testQuickUnion() {
+        UnionFind quickUnion = new UnionFindByQuickUnion(12);
+        quickUnion.union(0, 1);
+        quickUnion.union(0, 3);
+        quickUnion.union(0, 4);
+        quickUnion.union(2, 3);
+        quickUnion.union(2, 5);
+
+        quickUnion.union(6, 7);
+
+        quickUnion.union(8, 10);
+        quickUnion.union(9, 10);
+        quickUnion.union(9, 11);
+
+        System.out.println("quickUnion.isSame(0, 6) = " + quickUnion.isSame(0, 6));
+        System.out.println("quickUnion.isSame(0, 5) = " + quickUnion.isSame(0, 5));
+
+        quickUnion.union(4, 6);
+        System.out.println("quickUnion.isSame(2, 7) = " + quickUnion.isSame(2, 7));
+
+        System.out.println("quickUnion.find(7) = " + quickUnion.find(7));
+    }
+
+    @Test
+    public void testQuickUnionOptSize() {
+        UnionFind quickUnionOptSize = new UnionFindByQuickUnionOptSize(12);
+        quickUnionOptSize.union(0, 1);
+        quickUnionOptSize.union(0, 3);
+        quickUnionOptSize.union(0, 4);
+        quickUnionOptSize.union(2, 3);
+        quickUnionOptSize.union(2, 5);
+
+        quickUnionOptSize.union(6, 7);
+
+        quickUnionOptSize.union(8, 10);
+        quickUnionOptSize.union(9, 10);
+        quickUnionOptSize.union(9, 11);
+
+        System.out.println("quickUnionOptSize.isSame(0, 6) = " + quickUnionOptSize.isSame(0, 6));
+        System.out.println("quickUnionOptSize.isSame(0, 5) = " + quickUnionOptSize.isSame(0, 5));
+
+        quickUnionOptSize.union(4, 6);
+        System.out.println("quickUnionOptSize.isSame(2, 7) = " + quickUnionOptSize.isSame(2, 7));
+
+        System.out.println("quickUnionOptSize.find(7) = " + quickUnionOptSize.find(7));
+    }
 }
