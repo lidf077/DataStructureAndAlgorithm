@@ -2,6 +2,20 @@ package com.dongfang.dsa.algorithm.divideandconquer;
 
 import org.junit.Test;
 
+/**
+ * Divide and Conquer 分治
+ * 	1、分治，也就是分而治之，它的一般步骤是
+ * 		1-1、将原问题分解成若干个规模较小的子问题（子问题和原问题的结构一样，只是规模不同）
+ * 		1-2、子问题又为断分解成规模更小的子问题，直到不能再分解（直到可能轻易计算出子问题的解）
+ * 		1-3、利用子问题的解推导出原问题的解
+ * 			注意：
+ * 				-- 分治策略非常适合用递归
+ * 				-- 子问题之间是相互独立的
+ * 			分治的应用：归并排序 快速排序 Karatsuba算法（大数乘法）
+ * 	2、主定理（Master Theorem）
+ * 		2-1、分治策略通常遵守一种通用模式
+ * 			-- 解决规模为n的问题，分解成a个规模为n/b的子问题，然后在O(n_d)的时间内将子问题的解合并起来
+ */
 public class DivideAndConquer {
     private int[] arr = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
 
