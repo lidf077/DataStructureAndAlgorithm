@@ -98,4 +98,31 @@ public class UnionFindDemo {
 
         System.out.println("quickUnionOptRankAndPathCompression.find(7) = " + quickUnionOptRankAndPathCompression.find(7));
     }
+
+    @Test
+    public void testGenericUnionFind() {
+        GenericUnionFind<Integer> unionFind = new GenericUnionFind<>();
+        for (int i = 0; i < 12; i++) {
+            unionFind.makeSet(i);
+        }
+        unionFind.union(0, 1);
+        unionFind.union(0, 3);
+        unionFind.union(0, 4);
+        unionFind.union(2, 3);
+        unionFind.union(2, 5);
+
+        unionFind.union(6, 7);
+
+        unionFind.union(8, 10);
+        unionFind.union(9, 10);
+        unionFind.union(9, 11);
+
+        System.out.println("unionFind.isSame(0, 6) = " + unionFind.isSame(0, 6));
+        System.out.println("unionFind.isSame(0, 5) = " + unionFind.isSame(0, 5));
+
+        unionFind.union(4, 6);
+        System.out.println("unionFind.isSame(2, 7) = " + unionFind.isSame(2, 7));
+
+        System.out.println("unionFind.find(7) = " + unionFind.find(7));
+    }
 }
