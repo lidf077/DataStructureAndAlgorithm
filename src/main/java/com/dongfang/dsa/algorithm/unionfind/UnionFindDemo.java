@@ -77,7 +77,7 @@ public class UnionFindDemo {
 
     @Test
     public void testPathCompressUnionFind() {
-        UnionFind quickUnionOptRankAndPathCompression = new UnionFindByQuickUnionOptRankAndPathCompression(12);
+        UnionFind quickUnionOptRankAndPathCompression = new UnionFindByQuickUnionOptRankAndPathSplit(12);
         quickUnionOptRankAndPathCompression.union(0, 1);
         quickUnionOptRankAndPathCompression.union(0, 3);
         quickUnionOptRankAndPathCompression.union(0, 4);
