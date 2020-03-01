@@ -75,4 +75,11 @@ public class SortDemo {
         bucketSort.sort(data);
         System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
     }
+
+    @Test
+    public void testMergeSort() {
+        Sort<Integer> mergeSort = new MergeSort<>();
+        mergeSort.sort(data);
+        System.out.println("Arrays.toString(data) = " + Arrays.toString(data));
+    }
 }
