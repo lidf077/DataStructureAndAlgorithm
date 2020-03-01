@@ -31,9 +31,12 @@ public class UnionFindByQuickUnionOptRankAndPathCompression extends UnionFindByQ
     public int find(int v) {
         rangeCheck(v);
 
-        while (parents[v] != v) {
+        // 整个路径上所有节点的父节点都改成了根节点
+        // 递归到根节点时，递归终止
+        if (parents[v] != v) {
             parents[v] = find(parents[v]);
         }
+        // 没有对v对更改，上面的递归将v的父节点更改成了根节点
         return parents[v];
     }
 }

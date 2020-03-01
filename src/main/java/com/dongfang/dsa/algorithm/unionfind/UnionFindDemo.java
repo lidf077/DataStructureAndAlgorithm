@@ -74,4 +74,28 @@ public class UnionFindDemo {
 
         System.out.println("quickUnionOptSize.find(7) = " + quickUnionOptSize.find(7));
     }
+
+    @Test
+    public void testPathCompressUnionFind() {
+        UnionFind quickUnionOptRankAndPathCompression = new UnionFindByQuickUnionOptRankAndPathCompression(12);
+        quickUnionOptRankAndPathCompression.union(0, 1);
+        quickUnionOptRankAndPathCompression.union(0, 3);
+        quickUnionOptRankAndPathCompression.union(0, 4);
+        quickUnionOptRankAndPathCompression.union(2, 3);
+        quickUnionOptRankAndPathCompression.union(2, 5);
+
+        quickUnionOptRankAndPathCompression.union(6, 7);
+
+        quickUnionOptRankAndPathCompression.union(8, 10);
+        quickUnionOptRankAndPathCompression.union(9, 10);
+        quickUnionOptRankAndPathCompression.union(9, 11);
+
+        System.out.println("quickUnionOptRankAndPathCompression.isSame(0, 6) = " + quickUnionOptRankAndPathCompression.isSame(0, 6));
+        System.out.println("quickUnionOptRankAndPathCompression.isSame(0, 5) = " + quickUnionOptRankAndPathCompression.isSame(0, 5));
+
+        quickUnionOptRankAndPathCompression.union(4, 6);
+        System.out.println("quickUnionOptRankAndPathCompression.isSame(2, 7) = " + quickUnionOptRankAndPathCompression.isSame(2, 7));
+
+        System.out.println("quickUnionOptRankAndPathCompression.find(7) = " + quickUnionOptRankAndPathCompression.find(7));
+    }
 }
