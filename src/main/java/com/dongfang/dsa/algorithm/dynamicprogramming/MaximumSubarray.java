@@ -80,26 +80,70 @@ public class MaximumSubarray {
      * 					以nums[2] -3结尾的最大连续子序列是1 -3，所在dp(2) = dp(1) + -3 = -2
      * 					以nums[3] 4 结尾的最大连续子序列是4，  所在dp(3) = 4
      * 					以nums[4] -1结尾的最大连续子序列是4 -1，所在dp(4) = dp(3) + -1 = 3
+     * 	3、状态转移方程
+     * 		-- 如果dp(i-1) <= 0，那么dp(i) = nums[i]
+     * 		-- 如果dp(i-1) >  0，那么dp(i) = dp(i-1) + nums[i]
+     * 	4、初始状态
+     * 		-- dp(0) = nums[o]
+     * 	5、最终的解
+     * 		-- 最大的连续子序列和是所有的dp(i)中的最大值max{dp(i)}
      * @param nums
      * @return
      */
     public int maxSubArrayByDynamicProgramming(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
-        if (nums.length == 1) return nums[0];
         int[] dp = new int[nums.length];
         dp[0] = nums[0];
         int max = nums[0];
         for (int i = 1; i < nums.length; i++) {
+            // dp[i]是以nums[i]结尾的连续子序列中和最大的，
+            // 以nums[i]结尾的连续子数组在两个
+            // 以nums[i-1]结尾的+nums[i]
+            // nums[i]
+            // 取这两个的最大值
             dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
             if (dp[i] > max) max = dp[i];
         }
+        // 以nums[i]结尾的最大连续子序列和
+        //Arrays.toString(dp) = [-2, 1, -2, 4, 3, 5, 6, 1, 5]
+        System.out.println("Arrays.toString(dp) = " + Arrays.toString(dp));
+        return max;
+    }
 
+
+    // 求dp[i] 的时候，只用到了dp[i-1]前一个值，因此只保存前一个值就可以了，没必要保存所有的值
+    // 时间空间复杂度 O(N)，空间 O(1)
+    public int maxSubArrayByDynamicProgrammingOptSpaceComplexity(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int dp = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp = Math.max(nums[i], dp + nums[i]);
+            if (dp > max) max = dp;
+        }
+        return max;
+    }
+
+
+    public int maxSubArrayByDynamicProgrammingOpt(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int max = dp[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (dp[i - 1] < 0) {
+                dp[i] = nums[i];
+            } else {
+                dp[i] = dp[i - 1] + nums[i];
+            }
+            max = Math.max(dp[i], max);
+        }
         return max;
     }
 
     @Test
     public void testMaxSubArrayByDynamicProgramming() {
-        int max = maxSubArrayByDynamicProgramming(arr);
+        int max = maxSubArrayByDynamicProgrammingOptSpaceComplexity(arr);
         System.out.println("max = " + max);
     }
 
