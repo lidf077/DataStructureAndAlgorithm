@@ -40,7 +40,7 @@ public class Knapsack {
     public void testMaxValue() {
         int[] values = {6, 3, 5, 4, 6};
         int[] weights = {2, 2, 6, 5, 4};
-        int capacity = 10;
+        int capacity = 1;
         int value = maxValueExactOptSpaceAndLoop(values, weights, capacity);
         System.out.println("value = " + value);
     }
@@ -115,16 +115,18 @@ public class Knapsack {
         if (values == null || values.length == 0) return 0;
         if (weights == null || weights.length == 0) return 0;
         if (values.length != weights.length || capacity <= 0) return 0;
-
         int[] dp = new int[capacity + 1];
+//        for (int j = 1; j <= capacity; j++) {
+//            dp[j] = Integer.MIN_VALUE;
+//        }
         Arrays.fill(dp, Integer.MIN_VALUE);
-
+        dp[0] = 0;
         for (int i = 1; i <= values.length; i++) {
             for (int j = capacity; j >= weights[i - 1]; j--) {
+                // 如果能够凑够，dp[j]会大于0
                 dp[j] = Math.max(dp[j], values[i - 1] + dp[j - weights[i - 1]]);
             }
         }
-        System.out.println("dp[capacity] = " + dp[capacity]);
         return dp[capacity] < 0 ? -1 : dp[capacity];
     }
 }
