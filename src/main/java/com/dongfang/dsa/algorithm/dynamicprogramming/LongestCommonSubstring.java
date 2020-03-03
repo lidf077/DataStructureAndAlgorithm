@@ -2,6 +2,20 @@ package com.dongfang.dsa.algorithm.dynamicprogramming;
 
 import org.junit.Test;
 
+/**
+ * 最长公共子串（Longest Common SubString)
+ * 	1、子串是连续的子序列
+ * 	2、求两个字符串的最长公共子串长度
+ * 		ABCBA 和 BABCA的最长公共子串是ABC，长度为3
+ * 		1）、假设2个子符串分别是str1 str2
+ * 				i [1, str1.length]
+ * 				j [1, str2.length]
+ * 		2）、假设dp(i,j)是以str1[i-1] str2[j-1]结尾的最长公共子串长度
+ * 				-- 初始值 dp(i,0) = dp(0,j) = 0
+ * 				-- 如果 str1[i-1] = str2[j-1] 那么dp(i,j) = dp(i-1,j-1） + 1
+ * 				-- 如果 str1[i-1] ！= str2[j-1] 那么dp(i,j)=0
+ * 					最长公子串的长度是所有dp(i,j)中最大的max{dp(i,j)}
+ */
 public class LongestCommonSubstring {
     @Test
     public void testLcs() {
