@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+// 分成两个部分，看分别怎么处理
 public class 什么是递归 {
     private void fun(int i) {
         // 没有递归终止条件，就会出现StackOverflowError
