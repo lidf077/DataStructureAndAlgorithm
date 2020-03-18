@@ -1,5 +1,9 @@
 package com.dongfang.dsa.algorithm.sort;
 
+import org.junit.Test;
+
+import java.util.Arrays;
+
 /**
  * 快速排序--执行流程
  * 	1、从序列中选择一个轴点元素（pivot）
@@ -91,5 +95,49 @@ public class QuickSort<E extends Comparable<E>> extends Sort<E> {
 
         //  begin == end，返回哪个都行
         return begin;
+    }
+
+    /**
+     * https://www.jianshu.com/p/55ab254586bf
+     * @param arr
+     * @param left
+     * @param right
+     */
+    private void quick(int[] arr, int left, int right) {
+        if (left >= right) return;
+
+        int i = left, j = right, pivot = arr[left];
+
+        // i = j时退出循环
+        while (i < j) {
+            while (i < j && arr[j] >= pivot) j--;
+            // <= 因此 pivot 一直在左边，不会被交换
+            while (i < j && arr[i] <= pivot) i++;
+            if (i < j) swap(arr, i, j);
+        }
+        System.out.println("pivot = " + pivot);
+        System.out.println("Arrays.toString(arr) = " + Arrays.toString(arr));
+
+        // i就是pivot的真正位置
+        // left位置一直没变
+        arr[left] = arr[i];
+        arr[i] = pivot;
+        System.out.println("Arrays.toString(arr) after = " + Arrays.toString(arr));
+
+        quick(arr, left, i - 1);
+        quick(arr, i + 1, right);
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    @Test
+    public void testQuick() {
+        int[] arr = {6, 1, 2, 7, 9, 3, 4, 5, 10, 8};
+        quick(arr, 0, arr.length - 1);
+        System.out.println("Arrays.toString(arr) = " + Arrays.toString(arr));
     }
 }
